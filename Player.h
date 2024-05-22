@@ -10,7 +10,6 @@
 
 class Player
 {
-	
 private:
 //Variables
 	float playerMovementSpeed; 
@@ -18,7 +17,6 @@ private:
 	void initVariables();
 	void initShape(float resolutionWidth,
 		float resolutionHeight);
-
 
 public:
 //Constructors
@@ -30,18 +28,14 @@ public:
 	sf::CircleShape* triangle;
 	float spawnPositionX;
 	float spawnPositionY;
-	
-
 
 
 //Functions
-
 	void movePlayer();
-	void update();
+	
+	void updateWindowBounds(const sf::RenderTarget* target);
+
+	void update(const sf::RenderTarget* target);
 	void render(sf::RenderTarget* target);
-
-
-
-
 };
 

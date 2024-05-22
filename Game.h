@@ -2,19 +2,12 @@
 #include <iostream>
 #include <ctime>
 
-
 #include "Player.h"
-
-class Player;
 
 class Game
 {
-	
-
-private:
-	
+private:	
 	sf::Event event;
-	
 
 //Variables
 	Player* player;
@@ -32,27 +25,14 @@ public:
 //Getter
 	const bool isRunning() const;
 
-
 //Variables
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
 
-
-
 //Functions
+	void updatePlayer();
+
 	void update();
 	void render();
-
-
-
-
-
-
-
-	
-
-
-
-
 };
 

@@ -47,10 +47,18 @@ void Game::pollEvents()
 	}
 }
 
+
+
+void Game::updatePlayer()
+{
+	player->update(window);
+}
+
 void Game::update()
 {
 	pollEvents();
-	player->update();
+	updatePlayer();
+	
 }
 
 void Game::render()
