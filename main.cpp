@@ -1,6 +1,11 @@
 
 #include "Game.h"
 
+
+bool enemyOnLeftBoundary = false;
+bool enemyOnRightBoundary = false;
+
+
 int main()
 {
     
