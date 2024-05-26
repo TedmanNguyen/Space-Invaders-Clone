@@ -5,4 +5,4 @@
 
 
 # Current State of Affairs
-![]([github.com/TedmanNguyen/Space-Invaders-Clone/blob/main/downward motion.gif](https://github.com/TedmanNguyen/Space-Invaders-Clone/blob/main/downward%20motion.gif))
+![](https://github.com/TedmanNguyen/Space-Invaders-Clone/blob/main/downward%20motion.gif)
