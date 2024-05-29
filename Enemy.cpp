@@ -17,6 +17,9 @@ void Enemy::initVariables()
 	moveLeft = false;
 	leftBorder = false;
 	rightBorder = false;
+
+	//bullet collisions
+	bulletCollision = false;
 	 
 }
 
@@ -68,6 +71,8 @@ void Enemy::initOctagon(float spawnPositionX, float spawnPositionY)
 	shape.setPosition(spawnPositionX, spawnPositionY);
 }
 
+
+//Movement functions
 void Enemy::checkBorder(sf::RenderTarget* target)
 {
 	//touching leftbound
@@ -87,7 +92,6 @@ void Enemy::repositionDown()
 	shape.setPosition(shape.getPosition().x, shape.getGlobalBounds().top
 	+ enemyVerticalSpeed);
 }
-
 void Enemy::moveEnemyLeftRight()
 {
 	if (moveRight)
@@ -98,6 +102,16 @@ void Enemy::moveEnemyLeftRight()
 	{
 		shape.move(-enemySpeed, 0.0f);
 	}
+}
+
+//Bullet Collisions
+void Enemy::checkBullet(Bullet* bullet)
+{
+	if (shape.getGlobalBounds().intersects(bullet->line.getGlobalBounds()))
+	{
+		bulletCollision = true;
+	}
+	
 }
 
 void Enemy::updateEnemy(sf::RenderTarget* target)

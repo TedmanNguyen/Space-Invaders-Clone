@@ -4,6 +4,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 
+#include "Bullet.h"
+
 class Enemy
 {
 private:
@@ -27,8 +29,12 @@ private:
 	void initOctagon(float spawnPositionX,
 		float spawnPositionY);
 
+	//Movement functions
 	void checkBorder(sf::RenderTarget* target);
 	void moveEnemyLeftRight();
+
+	//Bullet functions
+	
 	
 public:
 	Enemy(int type, float spawnPositionX,
@@ -41,12 +47,17 @@ public:
 	bool rightBorder;
 	bool moveRight;
 	bool moveLeft;
+	bool bulletCollision;
+
+	//Bullet* playerBullet;
 
 //Functions
 	float spawnPositionX;
 	float spawnPositionY;
 
 	void repositionDown();
+
+	void checkBullet(Bullet* bullet);
 
 	void updateEnemy(sf::RenderTarget* target);
 	void renderEnemy(sf::RenderTarget* target);

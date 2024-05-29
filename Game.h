@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Enemy.h"
 
+
 class Game
 {
 private:	
@@ -20,6 +21,7 @@ private:
 	std::vector<Enemy*> allEnemies;
 	int maxEnemies;
 	int totalEnemies;
+
 
 //Functions
 	void initVariables();
@@ -38,6 +40,8 @@ public:
 //Variables
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
+
+	Bullet* bullet;
 
 //Functions
 	void updatePlayer();

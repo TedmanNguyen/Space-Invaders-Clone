@@ -2,7 +2,8 @@
 
 Player::Player(float resolutionWidth, float resolutionHeight)
 {
-	initVariables();
+	this->resolutionHeight = resolutionHeight;
+	initVariables(resolutionHeight);
 	initShape(resolutionWidth, resolutionHeight);		
 }
 void Player::initShape(float resolutionWidth, float resolutionHeight)
@@ -20,8 +21,14 @@ void Player::initShape(float resolutionWidth, float resolutionHeight)
 }
 
 
-void Player::initVariables()
+sf::Vector2f Player::getPlayerPosition()
 {
+	return triangle.getPosition();
+}
+
+void Player::initVariables(float resolutionHeight)
+{
+	this->resolutionHeight = resolutionHeight;
 	playerMovementSpeed = 7.0f;
 
 }
@@ -35,6 +42,45 @@ void Player::movePlayer()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		triangle.move(playerMovementSpeed, 0.0f);
+	}
+}
+
+void Player::shootBullets(const sf::RenderTarget* target)
+{
+	if (currentBullets < maxBullets)
+	{
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			//create bullets at current position
+
+			//add to vector
+			allPlayerBullets.push_back(new Bullet(resolutionHeight, triangle.getPosition()));
+			currentBullets++;
+
+
+		}
+
+	}
+	
+	if (!allPlayerBullets.empty())
+	{
+		for (Bullet* i : allPlayerBullets)
+		{
+			i->update(target);
+		}
+	}
+}
+
+void Player::checkBulletBoundary()
+{
+	for (Bullet* i : allPlayerBullets)
+	{
+		if (i->bulletOnBorder)
+		{
+			allPlayerBullets.pop_back();
+			currentBullets--;
+		}
 	}
 }
 
@@ -59,17 +105,27 @@ void Player::updateWindowBounds(const sf::RenderTarget* target)
 void Player::update(const sf::RenderTarget* target)
 {
 	movePlayer();
+	shootBullets(target);
+	checkBulletBoundary();
 	updateWindowBounds(target);
 }
 
 void Player::render(sf::RenderTarget* target)
 {
 	target->draw(triangle);
-	
+	for (Bullet* i : allPlayerBullets)
+	{
+		i->render(target);
+	}
 }
 
 Player::~Player()
 {
+	for (Bullet* ptr : allPlayerBullets)
+	{
+		delete ptr;
+	}
 	
+	allPlayerBullets.clear();
 }
 

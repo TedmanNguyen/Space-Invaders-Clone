@@ -14,7 +14,6 @@ void Game::initVariables()
 {
 	videoMode.height = 1000;
 	videoMode.width = 600;
-
 }
 
 void Game::initWindow()
@@ -61,8 +60,14 @@ void Game::pollEvents()
 {
 	while (window->pollEvent(event))
 	{
-		if (event.type == sf::Event::Closed)
+		
+		switch (event.type)
+		{
+		case sf::Event::Closed:
 			window->close();
+			break;
+
+		}
 	}
 }
 
@@ -97,6 +102,53 @@ void Game::updateEnemy()
 			ptr->leftBorder = false;
 		}	
 	}
+	//perform a for loop with collision detection of bullets
+	//for all enemies
+	//run enemies's check bullet mwethod. Needs to pass through the bullet here
+	//How do i pass through each bullet in the bullet class into that method?
+	//I need access to the bullet vector in the player class
+	for (Enemy* enemyPtr : allEnemies)
+	{
+		for (Bullet* bulletPtr : player->allPlayerBullets)
+		{
+			enemyPtr->checkBullet(bulletPtr);
+		}
+	}
+
+
+
+	//for loop through enemies
+	//check if bullet has touched enemy
+	//if so, pop it from the vector
+
+	int counter = 0;
+	for (Enemy* ptr : allEnemies)
+	{
+		if (ptr->bulletCollision)
+		{
+			allEnemies.erase(allEnemies.begin() + counter);
+			counter--;
+		}
+		counter++;
+	}
+
+
+	/*
+	auto enemyIter = allEnemies.begin();
+	
+	while (enemyIter != allEnemies.end())
+	{
+		auto temp = enemyIter		
+		if ((*enemyIter)->bulletCollision)
+		{
+			allEnemies.erase(enemyIter)
+		}
+		enemyIter++;
+	}
+	*/
+
+
+
 
 	for (Enemy* ptr : allEnemies)
 	{
@@ -119,6 +171,7 @@ void Game::renderEnemies()
 		i->renderEnemy(window);
 	}
 }
+
 
 void Game::render()
 {
