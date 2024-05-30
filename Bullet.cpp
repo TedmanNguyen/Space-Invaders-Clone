@@ -1,64 +1,57 @@
 #include "Bullet.h"
 
-Bullet::Bullet(int windowHeight, sf::Vector2f playerPosition)
+Bullet::Bullet(int windowHeight, sf::Vector2f agentPosition)
 {
-	initVariables(windowHeight);
-	initShape(playerPosition);
+	bulletSizeX = 5.0f;
+	bulletSizeY = 45.0f;
+	
+	
 }
 
 Bullet::~Bullet()
 {
 
-
 }
 
-void Bullet::initVariables(int windowHeight)
+void Bullet::checkBulletBoundary(float resolutionHeight) 
 {
-	bulletSpeed = 15;
-	this->resolutionHeight = windowHeight;
-	bulletSizeX = 5.0f;
-	bulletSizeY = 45.0f;
-}
-
-void Bullet::initShape(sf::Vector2f playerPosition)
-{
-	line.setFillColor(sf::Color::Cyan);
-	line.setSize(sf::Vector2<float>(bulletSizeX, bulletSizeY));
-	line.setOrigin(line.getSize().x / 2, 0.f);
-	line.setPosition(playerPosition.x, playerPosition.y);
-}
-
-void Bullet::moveBullet()
-{
-	line.move(0.0f, -bulletSpeed);
-}
-
-
-
-//Destroys bullets when it reaches off screen
-//Needs to take in resolution Height 
-void Bullet::checkBulletBoundary(float resolutionHeight)
-{
-	if (line.getGlobalBounds().top <= 0.f)
+	if (line.getGlobalBounds().top <= 0.f || 
+		line.getGlobalBounds().top >= resolutionHeight)
 	{
 		bulletOnBorder = true;
 	}
 
 }
 
-//probably needs player position to be passed through spawn location
-//to create new 
-
-
-void Bullet::update(const sf::RenderTarget* target)
+void Bullet::initVariables(int windowHeight)
 {
-	checkBulletBoundary(target->getSize().y);
+	bulletColor = sf::Color::White;
+	bulletSpeed = 1;
+	this->resolutionHeight = windowHeight;
+}
+
+
+void Bullet::initShape(sf::Vector2f agentPosition)
+{
+	line.setFillColor(bulletColor);
+	line.setSize(sf::Vector2<float>(bulletSizeX, bulletSizeY));
+	line.setOrigin(line.getSize().x / 2, 0.f);
+	line.setPosition(agentPosition.x, agentPosition.y);
+}
+
+
+void Bullet::update(const sf::RenderTarget& target)
+{
+	checkBulletBoundary(target.getSize().y);
 	moveBullet();
 
 }
 
-void Bullet::render(sf::RenderTarget* target)
+
+void Bullet::render(sf::RenderTarget& target)
 {
-	target->draw(line);
+	target.draw(line);
 
 }
+
+

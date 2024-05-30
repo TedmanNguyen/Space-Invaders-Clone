@@ -17,7 +17,6 @@ void Player::initShape(float resolutionWidth, float resolutionHeight)
 	triangle.setFillColor(sf::Color::Green);
 	triangle.setOrigin(triangle.getRadius(),0);
 	triangle.setPosition(spawnPositionX, spawnPositionY);
-
 }
 
 
@@ -45,7 +44,7 @@ void Player::movePlayer()
 	}
 }
 
-void Player::shootBullets(const sf::RenderTarget* target)
+void Player::shootBullets(const sf::RenderTarget& target)
 {
 	if (currentBullets < maxBullets)
 	{
@@ -55,17 +54,15 @@ void Player::shootBullets(const sf::RenderTarget* target)
 			//create bullets at current position
 
 			//add to vector
-			allPlayerBullets.push_back(new Bullet(resolutionHeight, triangle.getPosition()));
+			allPlayerBullets.push_back(new PlayerBullet(resolutionHeight, 
+				triangle.getPosition()));
 			currentBullets++;
-
-
 		}
-
 	}
 	
 	if (!allPlayerBullets.empty())
 	{
-		for (Bullet* i : allPlayerBullets)
+		for (PlayerBullet* i : allPlayerBullets)
 		{
 			i->update(target);
 		}
@@ -74,7 +71,7 @@ void Player::shootBullets(const sf::RenderTarget* target)
 
 void Player::checkBulletBoundary()
 {
-	for (Bullet* i : allPlayerBullets)
+	for (PlayerBullet* i : allPlayerBullets)
 	{
 		if (i->bulletOnBorder)
 		{
@@ -84,25 +81,25 @@ void Player::checkBulletBoundary()
 	}
 }
 
-void Player::updateWindowBounds(const sf::RenderTarget* target)
+void Player::updateWindowBounds(const sf::RenderTarget& target)
 {
 	//Allows players to swap to other side of screen
 
 	//Left Bound
 	if (triangle.getGlobalBounds().left + triangle.getGlobalBounds().width <= 0.f)
 	{
-		triangle.setPosition(target->getSize().x, triangle.getGlobalBounds().top);
+		triangle.setPosition(target.getSize().x, triangle.getGlobalBounds().top);
 	}
 
 	//Right Bound
-	if (triangle.getGlobalBounds().left >= target->getSize().x)
+	if (triangle.getGlobalBounds().left >= target.getSize().x)
 	{
 		triangle.setPosition(0.f, triangle.getGlobalBounds().top);
 	}
 
 }
 
-void Player::update(const sf::RenderTarget* target)
+void Player::update(const sf::RenderTarget& target)
 {
 	movePlayer();
 	shootBullets(target);
@@ -110,10 +107,10 @@ void Player::update(const sf::RenderTarget* target)
 	updateWindowBounds(target);
 }
 
-void Player::render(sf::RenderTarget* target)
+void Player::render(sf::RenderTarget& target)
 {
-	target->draw(triangle);
-	for (Bullet* i : allPlayerBullets)
+	target.draw(triangle);
+	for (PlayerBullet* i : allPlayerBullets)
 	{
 		i->render(target);
 	}
@@ -121,7 +118,7 @@ void Player::render(sf::RenderTarget* target)
 
 Player::~Player()
 {
-	for (Bullet* ptr : allPlayerBullets)
+	for (PlayerBullet* ptr : allPlayerBullets)
 	{
 		delete ptr;
 	}

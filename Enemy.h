@@ -4,7 +4,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 
-#include "Bullet.h"
+#include "PlayerBullet.h"
 
 class Enemy
 {
@@ -30,7 +30,7 @@ private:
 		float spawnPositionY);
 
 	//Movement functions
-	void checkBorder(sf::RenderTarget* target);
+	void checkBorder(sf::RenderTarget& target);
 	void moveEnemyLeftRight();
 
 	//Bullet functions
@@ -57,10 +57,10 @@ public:
 
 	void repositionDown();
 
-	void checkBullet(Bullet* bullet);
+	void checkBulletCollision(PlayerBullet* bullet);
 
-	void updateEnemy(sf::RenderTarget* target);
-	void renderEnemy(sf::RenderTarget* target);
+	void update(sf::RenderTarget& target);
+	void render(sf::RenderTarget& target);
 
 };
 

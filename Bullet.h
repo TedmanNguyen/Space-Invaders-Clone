@@ -7,45 +7,55 @@
 
 class Bullet
 {
+
 private:
-//Variables
+	//Variables
+
+	//functions
+
+protected:
 	float bulletSizeX;
 	float bulletSizeY;
 	int bulletSpeed;
 	int resolutionHeight;
-
-
-//functions
-	void initVariables(int windowHeight);
-	void initShape(sf::Vector2f playerPosition);
-
-	
-	void moveBullet();
-
-	
-
+	sf::Color bulletColor;
 
 public:
-//Constructors
-	Bullet();
-	Bullet(int windowHeight, sf::Vector2f playerPosition);
-	~Bullet();
+	//Constructors
+	/*
+	Bullet()
+	{
+		bulletSizeX = 5.0f;
+		bulletSizeY = 45.0f;
+		bulletSpeed = 0;
+		resolutionHeight = 0;
+	}
+	*/
+	Bullet(int windowHeight, sf::Vector2f agentPosition);
+	virtual ~Bullet();
 
-//Variables
-	sf::RectangleShape line; 
+
+	//Variables
+	sf::RectangleShape line;
 	bool bulletOnBorder = false;
 	
 
-//Functions
-	//sf::Vector2f getBulletPosition();
-
+	//Functions
 	void checkBulletBoundary(float resolutionHeight);
+	void update(const sf::RenderTarget& target);
+	void render(sf::RenderTarget& target);
+
+	virtual void initVariables(int windowHeight);
+	virtual void initShape(sf::Vector2f agentPosition);
+
+	virtual void moveBullet() = 0;
+	
+	
 	//update
 
-	void update(const sf::RenderTarget* target);
+	
 	//render
-	void render(sf::RenderTarget* target);
-
+	
 
 
 

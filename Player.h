@@ -4,7 +4,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 
-#include "Bullet.h"
+#include "PlayerBullet.h"
 
 
 class Player
@@ -22,10 +22,10 @@ private:
 	void initShape(float resolutionWidth,
 		float resolutionHeight);
 
-	void updateWindowBounds(const sf::RenderTarget* target);
+	void updateWindowBounds(const sf::RenderTarget& target);
 	void movePlayer();
 
-	void shootBullets(const sf::RenderTarget* target);
+	void shootBullets(const sf::RenderTarget& target);
 	void checkBulletBoundary();
 
 public:
@@ -39,13 +39,13 @@ public:
 	float spawnPositionY;
 	float resolutionHeight;
 
-	std::vector<Bullet*> allPlayerBullets;
+	std::vector<PlayerBullet*> allPlayerBullets;
 
 //Functions
 	
 
 
-	void update(const sf::RenderTarget* target);
-	void render(sf::RenderTarget* target);
+	void update(const sf::RenderTarget& target);
+	void render(sf::RenderTarget& target);
 };
 

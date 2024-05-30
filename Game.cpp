@@ -9,7 +9,6 @@ Game::Game()
 	spawnEnemy();
 }
 
-
 void Game::initVariables()
 {
 	videoMode.height = 1000;
@@ -71,37 +70,25 @@ void Game::pollEvents()
 	}
 }
 
+//Update Functions
 void Game::updatePlayer()
 {
-	player->update(window);
+	player->update(*window);
 }
 
 void Game::updateEnemy()
 {
+	updateEnemyMovement();
+	updateEnemyBulletCollision();
+
+	//Run each enemy's own update method
 	for (Enemy* ptr : allEnemies)
 	{
-		if (ptr->rightBorder)
-		{
-			for (Enemy* innerPtr : allEnemies)
-			{
-				innerPtr->moveRight = false;
-				innerPtr->moveLeft = true;
-				innerPtr->repositionDown();
-
-			}
-			ptr->rightBorder = false;
-		}
-		if (ptr->leftBorder)
-		{
-			for (Enemy* innerPtr : allEnemies)
-			{
-				innerPtr->moveLeft = false;
-				innerPtr->moveRight = true;
-				innerPtr->repositionDown();
-			}
-			ptr->leftBorder = false;
-		}	
+		ptr->update(*window);
 	}
+}
+void Game::updateEnemyBulletCollision()
+{
 	//perform a for loop with collision detection of bullets
 	//for all enemies
 	//run enemies's check bullet mwethod. Needs to pass through the bullet here
@@ -109,18 +96,13 @@ void Game::updateEnemy()
 	//I need access to the bullet vector in the player class
 	for (Enemy* enemyPtr : allEnemies)
 	{
-		for (Bullet* bulletPtr : player->allPlayerBullets)
+		for (PlayerBullet* bulletPtr : player->allPlayerBullets)
 		{
-			enemyPtr->checkBullet(bulletPtr);
+			enemyPtr->checkBulletCollision(bulletPtr);
 		}
 	}
 
-
-
-	//for loop through enemies
-	//check if bullet has touched enemy
-	//if so, pop it from the vector
-
+	//Enemy deletion if collided w/ bullet
 	int counter = 0;
 	for (Enemy* ptr : allEnemies)
 	{
@@ -131,29 +113,38 @@ void Game::updateEnemy()
 		}
 		counter++;
 	}
+}
 
 
-	/*
-	auto enemyIter = allEnemies.begin();
-	
-	while (enemyIter != allEnemies.end())
-	{
-		auto temp = enemyIter		
-		if ((*enemyIter)->bulletCollision)
-		{
-			allEnemies.erase(enemyIter)
-		}
-		enemyIter++;
-	}
-	*/
-
-
-
-
+void Game::updateEnemyMovement()
+{
+	//For all enemies, check if touching right/left border
 	for (Enemy* ptr : allEnemies)
 	{
-		ptr->updateEnemy(window);
+		if (ptr->rightBorder)
+		{
+			//All must update direction
+			for (Enemy* innerPtr : allEnemies)
+			{
+				innerPtr->moveRight = false;
+				innerPtr->moveLeft = true;
+				innerPtr->repositionDown();
+
+			}
+			ptr->rightBorder = false;
+		}
+		else if (ptr->leftBorder)
+		{
+			for (Enemy* innerPtr : allEnemies)
+			{
+				innerPtr->moveLeft = false;
+				innerPtr->moveRight = true;
+				innerPtr->repositionDown();
+			}
+			ptr->leftBorder = false;
+		}
 	}
+
 }
 
 void Game::update()
@@ -164,21 +155,21 @@ void Game::update()
 	
 }
 
+
+//Render Functions
 void Game::renderEnemies()
 {
-	for (auto i : allEnemies)
+	for (Enemy* i : allEnemies)
 	{
-		i->renderEnemy(window);
+		i->render(*window);
 	}
 }
-
-
 void Game::render()
 {
 	window->clear();
 	
-	player->render(window);
-	renderEnemies();
+	player->render(*window);
+	this->renderEnemies();
 
 	window->display();
 }

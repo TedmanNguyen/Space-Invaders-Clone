@@ -41,11 +41,13 @@ public:
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
 
-	Bullet* bullet;
+	PlayerBullet* bullet;
 
 //Functions
 	void updatePlayer();
 	void updateEnemy();
+	void updateEnemyMovement();
+	void updateEnemyBulletCollision();
 
 	void update();
 

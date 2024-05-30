@@ -72,8 +72,10 @@ void Enemy::initOctagon(float spawnPositionX, float spawnPositionY)
 }
 
 
+
+
 //Movement functions
-void Enemy::checkBorder(sf::RenderTarget* target)
+void Enemy::checkBorder(sf::RenderTarget& target)
 {
 	//touching leftbound
 	if (shape.getGlobalBounds().left <= 0.f)
@@ -82,7 +84,7 @@ void Enemy::checkBorder(sf::RenderTarget* target)
 	}
 	//touching right bound
 	else if (shape.getGlobalBounds().left + shape.getGlobalBounds().width 
-		>= target->getSize().x)
+		>= target.getSize().x)
 	{
 		rightBorder = true;
 	}
@@ -105,7 +107,7 @@ void Enemy::moveEnemyLeftRight()
 }
 
 //Bullet Collisions
-void Enemy::checkBullet(Bullet* bullet)
+void Enemy::checkBulletCollision(PlayerBullet* bullet)
 {
 	if (shape.getGlobalBounds().intersects(bullet->line.getGlobalBounds()))
 	{
@@ -114,15 +116,15 @@ void Enemy::checkBullet(Bullet* bullet)
 	
 }
 
-void Enemy::updateEnemy(sf::RenderTarget* target)
+void Enemy::update(sf::RenderTarget& target)
 {
 	checkBorder(target);
 	moveEnemyLeftRight();
 }
 
-void Enemy::renderEnemy(sf::RenderTarget* target)
+void Enemy::render(sf::RenderTarget& target)
 {
-	target->draw(shape);
+	target.draw(shape);
 }
 
 Enemy::~Enemy()
