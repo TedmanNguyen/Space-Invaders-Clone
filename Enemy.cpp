@@ -8,7 +8,7 @@ Enemy::Enemy(int type, float spawnPositionX, float spawnPositionY)
 
 void Enemy::initVariables()
 {
-	enemySpeed = 1.0f;
+	enemySpeed = 2.0f;
 	enemyVerticalSpeed = 1.0f;
 	enemyRadius = 20;
 	
@@ -48,7 +48,7 @@ void Enemy::initSquare(float spawnPositionX, float spawnPositionY)
 {
 	shape.setRadius(enemyRadius);
 	shape.setPointCount(4);
-	shape.setFillColor(sf::Color::Yellow);
+	shape.setFillColor(sf::Color::Red);
 	shape.setOrigin(shape.getRadius(), 0);
 	shape.setPosition(spawnPositionX, spawnPositionY);
 }
@@ -57,7 +57,7 @@ void Enemy::initHexagon(float spawnPositionX, float spawnPositionY)
 {
 	shape.setRadius(enemyRadius);
 	shape.setPointCount(6);
-	shape.setFillColor(sf::Color::Magenta);
+	shape.setFillColor(sf::Color::Red);
 	shape.setOrigin(shape.getRadius(), 0);
 	shape.setPosition(spawnPositionX, spawnPositionY);
 }
@@ -70,7 +70,6 @@ void Enemy::initOctagon(float spawnPositionX, float spawnPositionY)
 	shape.setOrigin(shape.getRadius(), 0);
 	shape.setPosition(spawnPositionX, spawnPositionY);
 }
-
 
 
 
@@ -88,6 +87,8 @@ void Enemy::checkBorder(sf::RenderTarget& target)
 	{
 		rightBorder = true;
 	}
+
+
 }
 void Enemy::repositionDown()
 {
@@ -106,7 +107,16 @@ void Enemy::moveEnemyLeftRight()
 	}
 }
 
-//Bullet Collisions
+//Enemy fire bullet methods
+void Enemy::shootBullets(float resolutionHeight, 
+	std::vector<EnemyBullet*>& allEnemyBullets)
+{
+	allEnemyBullets.push_back(
+		new EnemyBullet(resolutionHeight, shape.getPosition()));
+
+}
+
+//Bullet Collisions with Player
 void Enemy::checkBulletCollision(PlayerBullet* bullet)
 {
 	if (shape.getGlobalBounds().intersects(bullet->line.getGlobalBounds()))

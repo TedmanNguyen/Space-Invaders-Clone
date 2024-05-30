@@ -5,22 +5,21 @@
 #include <SFML/Audio.hpp>
 
 #include "Bullet.h"
-
-class PlayerBullet : public Bullet
+class EnemyBullet : public Bullet
 {
 private:
 
 
 public:
-//Constructors
-	//PlayerBullet();
-	PlayerBullet(int windowHeight, sf::Vector2f playerPosition);
-	~PlayerBullet();
+	//Constructors
+		//PlayerBullet();
+	EnemyBullet(int windowHeight, sf::Vector2f playerPosition);
+	~EnemyBullet();
 
-//Functions
+	//Functions
 	void initVariables(int windowHeight) override;
 	void initShape(sf::Vector2f playerPosition) override;
-		
+
 	void moveBullet() override;
 
 

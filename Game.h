@@ -17,10 +17,13 @@ private:
 
 //Variables
 	Player* player;
+
 	Enemy* enemy;
 	std::vector<Enemy*> allEnemies;
-	int maxEnemies;
 	int totalEnemies;
+	std::vector<EnemyBullet*> allEnemyBullets;
+	int maxEnemyBullets;
+	int currentEnemyBullets;
 
 
 //Functions
@@ -45,13 +48,17 @@ public:
 
 //Functions
 	void updatePlayer();
+
 	void updateEnemy();
 	void updateEnemyMovement();
 	void updateEnemyBulletCollision();
+	void updateEnemyBullets();
+	void updateEnemyBulletBoundary();
 
 	void update();
 
 	void renderEnemies();
+	void renderEnemyBullets(sf::RenderTarget& target);
 	void render();
 };
 

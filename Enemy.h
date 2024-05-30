@@ -5,6 +5,7 @@
 #include <SFML/Audio.hpp>
 
 #include "PlayerBullet.h"
+#include "EnemyBullet.h"
 
 class Enemy
 {
@@ -57,6 +58,8 @@ public:
 
 	void repositionDown();
 
+	void shootBullets(float resolutionHeight,
+		std::vector<EnemyBullet*>& allEnemyBullets);
 	void checkBulletCollision(PlayerBullet* bullet);
 
 	void update(sf::RenderTarget& target);

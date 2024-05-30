@@ -71,13 +71,15 @@ void Player::shootBullets(const sf::RenderTarget& target)
 
 void Player::checkBulletBoundary()
 {
+	int bulletCounter = 0;
 	for (PlayerBullet* i : allPlayerBullets)
 	{
 		if (i->bulletOnBorder)
 		{
-			allPlayerBullets.pop_back();
+			allPlayerBullets.erase(allPlayerBullets.begin() + bulletCounter);
 			currentBullets--;
 		}
+		bulletCounter++;
 	}
 }
 

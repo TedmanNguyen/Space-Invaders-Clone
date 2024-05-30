@@ -2,13 +2,9 @@
 #include "Game.h"
 
 
-bool enemyOnLeftBoundary = false;
-bool enemyOnRightBoundary = false;
-
-
 int main()
 {
-    
+    srand(static_cast<unsigned>(time(0)));
 
     //Create main window
     Game game;

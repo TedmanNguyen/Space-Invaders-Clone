@@ -9,9 +9,6 @@ class Bullet
 {
 
 private:
-	//Variables
-
-	//functions
 
 protected:
 	float bulletSizeX;
@@ -34,28 +31,23 @@ public:
 	Bullet(int windowHeight, sf::Vector2f agentPosition);
 	virtual ~Bullet();
 
-
 	//Variables
 	sf::RectangleShape line;
 	bool bulletOnBorder = false;
 	
-
 	//Functions
-	void checkBulletBoundary(float resolutionHeight);
-	void update(const sf::RenderTarget& target);
-	void render(sf::RenderTarget& target);
-
 	virtual void initVariables(int windowHeight);
 	virtual void initShape(sf::Vector2f agentPosition);
-
 	virtual void moveBullet() = 0;
+
+	void checkBulletBoundary(float resolutionHeight);
 	
 	
 	//update
-
+	void update(const sf::RenderTarget& target);
 	
 	//render
-	
+	void render(sf::RenderTarget& target);
 
 
 

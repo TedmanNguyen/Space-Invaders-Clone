@@ -42,9 +42,6 @@ public:
 	std::vector<PlayerBullet*> allPlayerBullets;
 
 //Functions
-	
-
-
 	void update(const sf::RenderTarget& target);
 	void render(sf::RenderTarget& target);
 };

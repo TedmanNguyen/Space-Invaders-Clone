@@ -46,7 +46,11 @@ void Game::spawnEnemy()
 
 		allEnemies.push_back(new Enemy(squareEnemy, widthSpace * i,
 			heightSpace * 3.0));		
-	}	
+	}
+	
+	totalEnemies = allEnemies.size();
+	maxEnemyBullets = 3;
+	currentEnemyBullets = 0;
 }
 
 
@@ -80,38 +84,13 @@ void Game::updateEnemy()
 {
 	updateEnemyMovement();
 	updateEnemyBulletCollision();
+	updateEnemyBullets();
+	updateEnemyBulletBoundary();
 
 	//Run each enemy's own update method
 	for (Enemy* ptr : allEnemies)
 	{
 		ptr->update(*window);
-	}
-}
-void Game::updateEnemyBulletCollision()
-{
-	//perform a for loop with collision detection of bullets
-	//for all enemies
-	//run enemies's check bullet mwethod. Needs to pass through the bullet here
-	//How do i pass through each bullet in the bullet class into that method?
-	//I need access to the bullet vector in the player class
-	for (Enemy* enemyPtr : allEnemies)
-	{
-		for (PlayerBullet* bulletPtr : player->allPlayerBullets)
-		{
-			enemyPtr->checkBulletCollision(bulletPtr);
-		}
-	}
-
-	//Enemy deletion if collided w/ bullet
-	int counter = 0;
-	for (Enemy* ptr : allEnemies)
-	{
-		if (ptr->bulletCollision)
-		{
-			allEnemies.erase(allEnemies.begin() + counter);
-			counter--;
-		}
-		counter++;
 	}
 }
 
@@ -147,11 +126,82 @@ void Game::updateEnemyMovement()
 
 }
 
+void Game::updateEnemyBulletCollision()
+{
+	
+	for (Enemy* enemyPtr : allEnemies)
+	{
+		for (PlayerBullet* bulletPtr : player->allPlayerBullets)
+		{
+			enemyPtr->checkBulletCollision(bulletPtr);
+		}
+	}
+
+	//Enemy deletion if collided w/ bullet
+	int counter = 0;
+	for (Enemy* ptr : allEnemies)
+	{
+		if (ptr->bulletCollision)
+		{
+			allEnemies.erase(allEnemies.begin() + counter);
+			counter--;
+		}
+		counter++;
+	}
+}
+
+void Game::updateEnemyBullets()
+{
+	//Shoot bullets
+	if (allEnemies.size() > 0)
+	{
+		if (currentEnemyBullets < maxEnemyBullets)
+		{
+			//it has to be an enemy that has not been deleted
+
+			int randomEnemyNumber = rand() % allEnemies.size();
+			auto randomEnemy = allEnemies.begin() + randomEnemyNumber;
+			(*randomEnemy)->shootBullets(videoMode.height,
+				allEnemyBullets);
+			currentEnemyBullets++;
+		}
+
+	
+	}	
+
+	//Move bullets
+	for (EnemyBullet* i : allEnemyBullets)
+	{
+		i->update(*window);
+	}
+}
+
+void Game::updateEnemyBulletBoundary()
+{
+	int bulletCounter = 0;
+	for (EnemyBullet* i : allEnemyBullets)
+	{
+		if (i->bulletOnBorder)
+		{
+			//fatal error
+			//trying to erase something out of range. 
+			
+			allEnemyBullets.erase(allEnemyBullets.begin() + bulletCounter);
+			bulletCounter--;
+			currentEnemyBullets--;
+		}
+		bulletCounter++;
+	}
+
+}
+
+
 void Game::update()
 {
 	pollEvents();
 	updatePlayer();
 	this->updateEnemy();
+
 	
 }
 
@@ -159,10 +209,24 @@ void Game::update()
 //Render Functions
 void Game::renderEnemies()
 {
-	for (Enemy* i : allEnemies)
+	if (allEnemies.size() > 0)
 	{
-		i->render(*window);
+		for (Enemy* i : allEnemies)
+		{
+			i->render(*window);
+		}
 	}
+}
+void Game::renderEnemyBullets(sf::RenderTarget& target)
+{
+	if (allEnemyBullets.size() > 0)
+	{
+		for (EnemyBullet* i : allEnemyBullets)
+		{
+			target.draw(i->line);
+		}
+	}
+
 }
 void Game::render()
 {
@@ -170,6 +234,7 @@ void Game::render()
 	
 	player->render(*window);
 	this->renderEnemies();
+	renderEnemyBullets(*window);
 
 	window->display();
 }
