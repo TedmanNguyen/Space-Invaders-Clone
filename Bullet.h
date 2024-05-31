@@ -40,6 +40,9 @@ public:
 	virtual void initShape(sf::Vector2f agentPosition);
 	virtual void moveBullet() = 0;
 
+	virtual void oppositionCollision() = 0;
+
+
 	void checkBulletBoundary(float resolutionHeight);
 	
 	

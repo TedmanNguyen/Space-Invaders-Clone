@@ -2,6 +2,7 @@
 #include <iostream>
 #include <ctime>
 #include <vector>
+#include <sstream>
 
 #include "Player.h"
 #include "Enemy.h"
@@ -16,11 +17,16 @@ private:
 	const int octagonEnemy = 8;
 
 //Variables
+	bool gameOver;
+
+
 	Player* player;
+	int playerPoints;
 
 	Enemy* enemy;
 	std::vector<Enemy*> allEnemies;
 	int totalEnemies;
+	float currentEnemyPercentage;
 	std::vector<EnemyBullet*> allEnemyBullets;
 	int maxEnemyBullets;
 	int currentEnemyBullets;
@@ -29,6 +35,10 @@ private:
 //Functions
 	void initVariables();
 	void initWindow();
+	void initFonts();
+	void initGUI();
+
+
 	void spawnPlayer();
 	void spawnEnemy();
 	void pollEvents();
@@ -40,25 +50,39 @@ public:
 //Getter
 	const bool isRunning() const;
 
+
 //Variables
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
 
 	PlayerBullet* bullet;
 
+	sf::Font fonts;
+	sf::Text inGameText;
+	sf::Text preGameText;
+	sf::Text endGameText;
+	
+
 //Functions
+
 	void updatePlayer();
+	void updatePlayerBulletCollision();
 
 	void updateEnemy();
+	void updateEnemySpeed();
 	void updateEnemyMovement();
 	void updateEnemyBulletCollision();
 	void updateEnemyBullets();
 	void updateEnemyBulletBoundary();
 
+	void updateGUI();
+
 	void update();
 
 	void renderEnemies();
 	void renderEnemyBullets(sf::RenderTarget& target);
+
+	void renderGUI();
 	void render();
 };
 

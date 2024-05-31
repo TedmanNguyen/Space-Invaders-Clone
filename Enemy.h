@@ -57,6 +57,7 @@ public:
 	float spawnPositionY;
 
 	void repositionDown();
+	void updateEnemySpeed(float multiple);
 
 	void shootBullets(float resolutionHeight,
 		std::vector<EnemyBullet*>& allEnemyBullets);

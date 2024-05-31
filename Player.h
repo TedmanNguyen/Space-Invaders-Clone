@@ -5,6 +5,7 @@
 #include <SFML/Audio.hpp>
 
 #include "PlayerBullet.h"
+#include "EnemyBullet.h"
 
 
 class Player
@@ -16,7 +17,7 @@ private:
 	sf::Vector2f getPlayerPosition();
 	
 	int maxBullets = 1;
-	int currentBullets = 0;
+	
 //Functions
 	void initVariables(float resolutionHeight);
 	void initShape(float resolutionWidth,
@@ -34,6 +35,10 @@ public:
 	~Player();
 
 //Variables
+	int playerHP; 
+	bool collidedWithEnemyBullet;
+
+	int currentBullets = 0;
 	sf::CircleShape triangle;
 	float spawnPositionX;
 	float spawnPositionY;
@@ -42,6 +47,9 @@ public:
 	std::vector<PlayerBullet*> allPlayerBullets;
 
 //Functions
+	void checkEnemyBulletCollision(const EnemyBullet& enemyBullet);
+
+
 	void update(const sf::RenderTarget& target);
 	void render(sf::RenderTarget& target);
 };

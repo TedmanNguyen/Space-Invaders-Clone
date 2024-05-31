@@ -22,6 +22,8 @@ void PlayerBullet::initVariables(int windowHeight)
 	bulletColor = sf::Color::Cyan;
 	bulletSpeed = 15;
 	this->resolutionHeight = windowHeight;
+
+	collidedEnemy = false;
 }
 void PlayerBullet::initShape(sf::Vector2f playerPosition)
 {
@@ -35,4 +37,8 @@ void PlayerBullet::moveBullet()
 	line.move(0.0f, -bulletSpeed);
 }
 
+void PlayerBullet::oppositionCollision()
+{
+	collidedEnemy = true;
+}
 

@@ -16,6 +16,7 @@ void EnemyBullet::initVariables(int windowHeight)
 {
 	bulletColor = sf::Color::Red;
 	bulletSpeed = 5;
+	collidedPlayer = false;
 	this->resolutionHeight = windowHeight;
 }
 void EnemyBullet::initShape(sf::Vector2f enemyPosition)
@@ -28,4 +29,14 @@ void EnemyBullet::initShape(sf::Vector2f enemyPosition)
 void EnemyBullet::moveBullet()
 {
 	line.move(0.0f, bulletSpeed);
+}
+
+void EnemyBullet::oppositionCollision()
+{
+	/*
+	if (something)
+	{
+		collidedPlayer = true;
+	}
+	*/
 }

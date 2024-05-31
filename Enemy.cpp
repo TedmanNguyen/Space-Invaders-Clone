@@ -8,8 +8,8 @@ Enemy::Enemy(int type, float spawnPositionX, float spawnPositionY)
 
 void Enemy::initVariables()
 {
-	enemySpeed = 2.0f;
-	enemyVerticalSpeed = 1.0f;
+	enemySpeed = 1.f;
+	enemyVerticalSpeed = 2.5f;
 	enemyRadius = 20;
 	
 	//Directional Booleans
@@ -94,6 +94,19 @@ void Enemy::repositionDown()
 {
 	shape.setPosition(shape.getPosition().x, shape.getGlobalBounds().top
 	+ enemyVerticalSpeed);
+}
+void Enemy::updateEnemySpeed(float num)
+{
+	
+	enemySpeed = .8f * num;
+	
+	if (enemyVerticalSpeed <= 4.8f)
+	{
+		enemyVerticalSpeed = enemyVerticalSpeed * num;
+	}
+	
+	
+
 }
 void Enemy::moveEnemyLeftRight()
 {

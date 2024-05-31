@@ -14,7 +14,7 @@ void Player::initShape(float resolutionWidth, float resolutionHeight)
 	//triangle = new sf::CircleShape(20, 3);
 	triangle.setRadius(20);
 	triangle.setPointCount(3);
-	triangle.setFillColor(sf::Color::Green);
+	triangle.setFillColor(sf::Color::Blue);
 	triangle.setOrigin(triangle.getRadius(),0);
 	triangle.setPosition(spawnPositionX, spawnPositionY);
 }
@@ -29,6 +29,8 @@ void Player::initVariables(float resolutionHeight)
 {
 	this->resolutionHeight = resolutionHeight;
 	playerMovementSpeed = 7.0f;
+	playerHP = 3;
+	collidedWithEnemyBullet = false;
 
 }
 
@@ -97,6 +99,21 @@ void Player::updateWindowBounds(const sf::RenderTarget& target)
 	if (triangle.getGlobalBounds().left >= target.getSize().x)
 	{
 		triangle.setPosition(0.f, triangle.getGlobalBounds().top);
+	}
+
+}
+
+void Player::checkEnemyBulletCollision(const EnemyBullet& enemyBullet)
+{
+	//if bullet has collided with player 
+	//remove 1 life
+
+	//pass through enemybullet
+	if (triangle.getGlobalBounds().intersects(
+		enemyBullet.line.getGlobalBounds()))
+	{
+		playerHP--;
+		collidedWithEnemyBullet = true;
 	}
 
 }

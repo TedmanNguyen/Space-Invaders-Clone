@@ -16,11 +16,15 @@ public:
 	EnemyBullet(int windowHeight, sf::Vector2f playerPosition);
 	~EnemyBullet();
 
+	//Variables
+	bool collidedPlayer; 
+
 	//Functions
 	void initVariables(int windowHeight) override;
 	void initShape(sf::Vector2f playerPosition) override;
 
 	void moveBullet() override;
+	void oppositionCollision() override;
 
 
 
