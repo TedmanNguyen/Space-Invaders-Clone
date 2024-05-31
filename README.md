@@ -6,3 +6,6 @@
 
 # Current State of Affairs
 ![](https://github.com/TedmanNguyen/Space-Invaders-Clone/blob/main/UI%20Points%20HP%20Gameover.gif)
+
+# First Commit
+![](https://github.com/TedmanNguyen/Space-Invaders-Clone/blob/main/moving%20player.gif)
