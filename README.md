@@ -4,8 +4,8 @@
 :space_invader: Focuses on Object Oriented Programming  
 
 
-# Current State of Affairs
+# Current Progress
 ![](https://github.com/TedmanNguyen/Space-Invaders-Clone/blob/main/UI%20Points%20HP%20Gameover.gif)
 
-# First Commit
+# First Commit 
 ![](https://github.com/TedmanNguyen/Space-Invaders-Clone/blob/main/moving%20player.gif)
