@@ -2,7 +2,6 @@
 
 Player::Player(float resolutionWidth, float resolutionHeight)
 {
-	this->resolutionHeight = resolutionHeight;
 	initVariables(resolutionHeight);
 	initShape(resolutionWidth, resolutionHeight);		
 }
@@ -14,7 +13,7 @@ void Player::initShape(float resolutionWidth, float resolutionHeight)
 	//triangle = new sf::CircleShape(20, 3);
 	triangle.setRadius(20);
 	triangle.setPointCount(3);
-	triangle.setFillColor(sf::Color::Blue);
+	triangle.setFillColor(sf::Color::Yellow);
 	triangle.setOrigin(triangle.getRadius(),0);
 	triangle.setPosition(spawnPositionX, spawnPositionY);
 }
@@ -50,7 +49,6 @@ void Player::shootBullets(const sf::RenderTarget& target)
 {
 	if (currentBullets < maxBullets)
 	{
-
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
 			//create bullets at current position

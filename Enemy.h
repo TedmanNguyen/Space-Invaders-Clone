@@ -11,31 +11,24 @@ class Enemy
 {
 private:
 //Variables
-	
-	float moveDownDistance;
-	int enemyRadius;
+	float enemyRadius;
 	float enemySpeed;
 	float enemyVerticalSpeed;
 
 //Functions
+//Initialization
 	void initVariables();
-	void initFunctions();
 	void initShape(int type, float spawnPositionX,
 		float spawnPositionY);
-
 	void initSquare(float spawnPositionX, 
 		float spawnPositionY);
 	void initHexagon(float spawnPositionX,
 		float spawnPositionY);
 	void initOctagon(float spawnPositionX,
 		float spawnPositionY);
-
-	//Movement functions
+//Update
 	void checkBorder(sf::RenderTarget& target);
 	void moveEnemyLeftRight();
-
-	//Bullet functions
-	
 	
 public:
 	Enemy(int type, float spawnPositionX,
@@ -49,21 +42,18 @@ public:
 	bool moveRight;
 	bool moveLeft;
 	bool bulletCollision;
-
-	//Bullet* playerBullet;
+	bool earthCollision;
 
 //Functions
-	float spawnPositionX;
-	float spawnPositionY;
-
 	void repositionDown();
 	void updateEnemySpeed(float multiple);
-
 	void shootBullets(float resolutionHeight,
 		std::vector<EnemyBullet*>& allEnemyBullets);
 	void checkBulletCollision(PlayerBullet* bullet);
+	void checkEarthCollision(float resolutionHeight);
 
 	void update(sf::RenderTarget& target);
+
 	void render(sf::RenderTarget& target);
 
 };

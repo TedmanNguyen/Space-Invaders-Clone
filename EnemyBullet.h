@@ -8,11 +8,13 @@
 class EnemyBullet : public Bullet
 {
 private:
-
+	sf::Color bulletColor;
+	float bulletSpeed;
+	float resolutionHeight;
 
 public:
 	//Constructors
-		//PlayerBullet();
+	EnemyBullet();
 	EnemyBullet(int windowHeight, sf::Vector2f playerPosition);
 	~EnemyBullet();
 
@@ -22,12 +24,7 @@ public:
 	//Functions
 	void initVariables(int windowHeight) override;
 	void initShape(sf::Vector2f playerPosition) override;
-
 	void moveBullet() override;
-	void oppositionCollision() override;
-
-
-
 
 };
 

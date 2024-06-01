@@ -5,12 +5,11 @@ Enemy::Enemy(int type, float spawnPositionX, float spawnPositionY)
 	initVariables();
 	initShape(type, spawnPositionX, spawnPositionY);
 }
-
 void Enemy::initVariables()
 {
 	enemySpeed = 1.f;
 	enemyVerticalSpeed = 2.5f;
-	enemyRadius = 20;
+	enemyRadius = 20.f;
 	
 	//Directional Booleans
 	moveRight = true;
@@ -20,13 +19,9 @@ void Enemy::initVariables()
 
 	//bullet collisions
 	bulletCollision = false;
+	earthCollision = false;
 	 
 }
-
-void Enemy::initFunctions()
-{
-}
-
 void Enemy::initShape(int type, 
 	float spawnPositionX, float spawnPositionY)
 {
@@ -43,7 +38,6 @@ void Enemy::initShape(int type,
 		break;
 	}
 }
-
 void Enemy::initSquare(float spawnPositionX, float spawnPositionY)
 {
 	shape.setRadius(enemyRadius);
@@ -71,8 +65,12 @@ void Enemy::initOctagon(float spawnPositionX, float spawnPositionY)
 	shape.setPosition(spawnPositionX, spawnPositionY);
 }
 
-
-
+void Enemy::update(sf::RenderTarget& target)
+{
+	checkBorder(target);
+	moveEnemyLeftRight();
+	checkEarthCollision(target.getSize().y);
+}
 //Movement functions
 void Enemy::checkBorder(sf::RenderTarget& target)
 {
@@ -87,26 +85,6 @@ void Enemy::checkBorder(sf::RenderTarget& target)
 	{
 		rightBorder = true;
 	}
-
-
-}
-void Enemy::repositionDown()
-{
-	shape.setPosition(shape.getPosition().x, shape.getGlobalBounds().top
-	+ enemyVerticalSpeed);
-}
-void Enemy::updateEnemySpeed(float num)
-{
-	
-	enemySpeed = .8f * num;
-	
-	if (enemyVerticalSpeed <= 4.8f)
-	{
-		enemyVerticalSpeed = enemyVerticalSpeed * num;
-	}
-	
-	
-
 }
 void Enemy::moveEnemyLeftRight()
 {
@@ -119,6 +97,21 @@ void Enemy::moveEnemyLeftRight()
 		shape.move(-enemySpeed, 0.0f);
 	}
 }
+void Enemy::updateEnemySpeed(float num)
+{
+	//Enemy speed increases, multiplied by 
+	// inverse porportion of current enemies
+	enemySpeed = .8f * num;
+	if (enemyVerticalSpeed <= 4.8f)
+	{
+		enemyVerticalSpeed = enemyVerticalSpeed * num;
+	}
+}
+void Enemy::repositionDown()
+{
+	shape.setPosition(shape.getPosition().x, shape.getGlobalBounds().top
+	+ enemyVerticalSpeed);
+}
 
 //Enemy fire bullet methods
 void Enemy::shootBullets(float resolutionHeight, 
@@ -126,23 +119,24 @@ void Enemy::shootBullets(float resolutionHeight,
 {
 	allEnemyBullets.push_back(
 		new EnemyBullet(resolutionHeight, shape.getPosition()));
-
 }
 
-//Bullet Collisions with Player
+//Collisions with Player Bullet
 void Enemy::checkBulletCollision(PlayerBullet* bullet)
 {
 	if (shape.getGlobalBounds().intersects(bullet->line.getGlobalBounds()))
 	{
 		bulletCollision = true;
 	}
-	
 }
 
-void Enemy::update(sf::RenderTarget& target)
+void Enemy::checkEarthCollision(float resolutionHeight)
 {
-	checkBorder(target);
-	moveEnemyLeftRight();
+	if (shape.getGlobalBounds().top >= resolutionHeight)
+	{
+		earthCollision = true;
+	}
+
 }
 
 void Enemy::render(sf::RenderTarget& target)

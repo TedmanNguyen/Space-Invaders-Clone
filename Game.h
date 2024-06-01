@@ -6,68 +6,75 @@
 
 #include "Player.h"
 #include "Enemy.h"
+#include "UserInterface.h"
 
 
 class Game
 {
 private:	
-	sf::Event event;
-	const int squareEnemy = 4;
-	const int hexagonEnemy = 6;
-	const int octagonEnemy = 8;
-
 //Variables
+	//Window
+	sf::Event event;
+
+	//Game States
 	bool gameOver;
+	bool startGame;
+	bool winGame;
+	int difficultyLevel;
 
+	//Background
+	sf::Texture background;
+	sf::Sprite space;
+	sf::Vector2u backgroundSize;
 
+	//UI
+	UserInterface* userInterface;
+
+	//Mouse
+	sf::Vector2i mousePosWindow;
+	sf::Vector2f mousePosView;
+
+	//Player
 	Player* player;
 	int playerPoints;
 
+	//Enemy
 	Enemy* enemy;
 	std::vector<Enemy*> allEnemies;
 	int totalEnemies;
+	int squareEnemy;
+	int hexagonEnemy;
+	int octagonEnemy;
 	float currentEnemyPercentage;
+
+	//Enemy Bullets
 	std::vector<EnemyBullet*> allEnemyBullets;
 	int maxEnemyBullets;
 	int currentEnemyBullets;
 
 
 //Functions
+//Initialization
 	void initVariables();
 	void initWindow();
-	void initFonts();
+	void initBackground();
 	void initGUI();
-
 
 	void spawnPlayer();
 	void spawnEnemy();
 	void pollEvents();
 
-public:
-	Game();
-	~Game();
+//Update
+	//GUI
+	void updateMousePosition();
+	void updateGUI();
 
-//Getter
-	const bool isRunning() const;
-
-
-//Variables
-	sf::RenderWindow* window;
-	sf::VideoMode videoMode;
-
-	PlayerBullet* bullet;
-
-	sf::Font fonts;
-	sf::Text inGameText;
-	sf::Text preGameText;
-	sf::Text endGameText;
-	
-
-//Functions
-
+	//Player
 	void updatePlayer();
 	void updatePlayerBulletCollision();
-
+	void updatePlayerEnemyEarthCollision();
+	
+	//Enemy
 	void updateEnemy();
 	void updateEnemySpeed();
 	void updateEnemyMovement();
@@ -75,14 +82,34 @@ public:
 	void updateEnemyBullets();
 	void updateEnemyBulletBoundary();
 
-	void updateGUI();
 
-	void update();
-
+	
+//Render
+	//Enemies
 	void renderEnemies();
 	void renderEnemyBullets(sf::RenderTarget& target);
 
+	//Player
+	void renderPlayer();
+
+	//GUI
 	void renderGUI();
+	void renderBackground();
+	
+public:
+	Game();
+	~Game();
+
+//Variables
+	sf::RenderWindow* window;
+	sf::VideoMode videoMode;
+	
+//Functions
+	const bool isRunning() const;
+	void update();	
 	void render();
+	
+
+	
 };
 

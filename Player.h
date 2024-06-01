@@ -12,20 +12,22 @@ class Player
 {
 private:
 //Variables
-	sf::Event event;
+	sf::CircleShape triangle;
 	float playerMovementSpeed; 
-	sf::Vector2f getPlayerPosition();
-	
 	int maxBullets = 1;
+	float spawnPositionX;
+	float spawnPositionY;
+	float resolutionHeight;
 	
 //Functions
+//Initialization
+	sf::Vector2f getPlayerPosition();
 	void initVariables(float resolutionHeight);
 	void initShape(float resolutionWidth,
 		float resolutionHeight);
-
+//Update
 	void updateWindowBounds(const sf::RenderTarget& target);
 	void movePlayer();
-
 	void shootBullets(const sf::RenderTarget& target);
 	void checkBulletBoundary();
 
@@ -36,20 +38,12 @@ public:
 
 //Variables
 	int playerHP; 
-	bool collidedWithEnemyBullet;
-
 	int currentBullets = 0;
-	sf::CircleShape triangle;
-	float spawnPositionX;
-	float spawnPositionY;
-	float resolutionHeight;
-
+	bool collidedWithEnemyBullet;
 	std::vector<PlayerBullet*> allPlayerBullets;
 
 //Functions
 	void checkEnemyBulletCollision(const EnemyBullet& enemyBullet);
-
-
 	void update(const sf::RenderTarget& target);
 	void render(sf::RenderTarget& target);
 };

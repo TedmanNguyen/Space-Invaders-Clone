@@ -1,21 +1,24 @@
 #include "EnemyBullet.h"
 
+EnemyBullet::EnemyBullet()
+{
+	bulletColor = sf::Color::Red;
+	bulletSpeed = 5.f;
+	collidedPlayer = false;
+	resolutionHeight = 0.f;
+}
+
 EnemyBullet::EnemyBullet(int windowHeight, sf::Vector2f enemyPosition)
 	: Bullet(windowHeight, enemyPosition)
 {
-
 	initVariables(windowHeight);
 	initShape(enemyPosition);
-
 }
-EnemyBullet::~EnemyBullet()
-{
 
-}
 void EnemyBullet::initVariables(int windowHeight)
 {
 	bulletColor = sf::Color::Red;
-	bulletSpeed = 5;
+	bulletSpeed = 5.f;
 	collidedPlayer = false;
 	this->resolutionHeight = windowHeight;
 }
@@ -31,12 +34,7 @@ void EnemyBullet::moveBullet()
 	line.move(0.0f, bulletSpeed);
 }
 
-void EnemyBullet::oppositionCollision()
+EnemyBullet::~EnemyBullet()
 {
-	/*
-	if (something)
-	{
-		collidedPlayer = true;
-	}
-	*/
+
 }

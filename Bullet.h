@@ -7,27 +7,15 @@
 
 class Bullet
 {
-
 private:
 
 protected:
 	float bulletSizeX;
 	float bulletSizeY;
-	int bulletSpeed;
-	int resolutionHeight;
-	sf::Color bulletColor;
 
 public:
-	//Constructors
-	/*
-	Bullet()
-	{
-		bulletSizeX = 5.0f;
-		bulletSizeY = 45.0f;
-		bulletSpeed = 0;
-		resolutionHeight = 0;
-	}
-	*/
+	//Constructors	
+	Bullet();
 	Bullet(int windowHeight, sf::Vector2f agentPosition);
 	virtual ~Bullet();
 
@@ -36,16 +24,13 @@ public:
 	bool bulletOnBorder = false;
 	
 	//Functions
-	virtual void initVariables(int windowHeight);
-	virtual void initShape(sf::Vector2f agentPosition);
+	void checkBulletBoundary(float resolutionHeight);
+
+	//Functions to override
+	virtual void initVariables(int windowHeight) = 0;
+	virtual void initShape(sf::Vector2f agentPosition) = 0;
 	virtual void moveBullet() = 0;
 
-	virtual void oppositionCollision() = 0;
-
-
-	void checkBulletBoundary(float resolutionHeight);
-	
-	
 	//update
 	void update(const sf::RenderTarget& target);
 	

@@ -1,17 +1,18 @@
 #include "PlayerBullet.h"
-/*
+
 PlayerBullet::PlayerBullet()
 {
-
+	bulletColor = sf::Color::Yellow;
+	bulletSpeed = 15.f;
+	resolutionHeight = 0.f;
+	collidedEnemy = false;
 }
-*/
+
 PlayerBullet::PlayerBullet(int windowHeight, sf::Vector2f playerPosition)
 	: Bullet(windowHeight, playerPosition)
 {
-	
 	initVariables(windowHeight);
-	initShape(playerPosition);
-	
+	initShape(playerPosition);	
 }
 PlayerBullet::~PlayerBullet()
 {
@@ -19,10 +20,9 @@ PlayerBullet::~PlayerBullet()
 }
 void PlayerBullet::initVariables(int windowHeight) 
 {
-	bulletColor = sf::Color::Cyan;
+	bulletColor = sf::Color::Yellow;
 	bulletSpeed = 15;
 	this->resolutionHeight = windowHeight;
-
 	collidedEnemy = false;
 }
 void PlayerBullet::initShape(sf::Vector2f playerPosition)
@@ -36,9 +36,9 @@ void PlayerBullet::moveBullet()
 {
 	line.move(0.0f, -bulletSpeed);
 }
-
-void PlayerBullet::oppositionCollision()
+void PlayerBullet::enemyCollision()
 {
 	collidedEnemy = true;
 }
+
 

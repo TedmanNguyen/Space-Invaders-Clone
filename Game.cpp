@@ -5,99 +5,80 @@ Game::Game()
 {
 	initVariables();
 	initWindow();
-	initFonts();
+	initBackground();
 	initGUI();
-	spawnPlayer();
-	spawnEnemy();
 }
-
+//Intialization Functions
 void Game::initVariables()
 {
+	//Windows	
 	videoMode.height = 1000;
 	videoMode.width = 500;
+	
+	//Game states
 	gameOver = false;
-}
+	startGame = false;
+	winGame = false;
+	difficultyLevel = 0;
 
+	//Enemy Variables
+	maxEnemyBullets = 1;
+	squareEnemy = 4;
+	hexagonEnemy = 6;
+	octagonEnemy = 8;
+
+}
 void Game::initWindow()
 {
-	window = new sf::RenderWindow(videoMode, "Space Invaders Clone",
+	window = new sf::RenderWindow(videoMode, "Shape Invaders",
 		sf::Style::Default);
 	window->setFramerateLimit(60);
-}
 
-void Game::initFonts()
+}
+void Game::initBackground()
 {
-	if (!fonts.loadFromFile("Fonts/space_invaders.ttf"))
+	if (!background.loadFromFile("Assets/spacePhone.jpg"))
 	{
-		std::cerr << "ERROR::GAME::INITFONTS::COULD NOT LOAD space_invaders.ttf"
-			<< "\n";
+		std::cerr << "ERROR::GAME::INITBACKGROUND COULD NOT LOAD.\n";
 	}
-
+	backgroundSize = background.getSize();
+	space.setTexture(background);
+	space.setPosition(sf::Vector2f(0, -150));
 }
-
 void Game::initGUI()
 {
-	inGameText.setFont(fonts);
-	inGameText.setFillColor(sf::Color::White);
-	inGameText.setCharacterSize(30);
-	inGameText.setPosition(sf::Vector2f(20, 50));
-
-	//inGameText.setString("Health")
-
-
-	endGameText.setFont(fonts);
-	endGameText.setFillColor(sf::Color::White);
-	endGameText.setCharacterSize(70);
-	endGameText.setPosition(sf::Vector2f(20, 300));
-	endGameText.setString("GAME OVER!");
-
-
-}
-
-void Game::spawnPlayer()
-{
-	player = nullptr;
-	player = new Player(static_cast<float>(videoMode.width),
+	userInterface = new UserInterface(static_cast<float>(videoMode.width), 
 		static_cast<float>(videoMode.height));
-
-	playerPoints = 0;
 }
-
-void Game::spawnEnemy()
-{
-	//Sets the positions of enemies relative to resolution size
-	float widthSpace = videoMode.width / 8.0;
-	float heightSpace = videoMode.height / 9.0;
-
-	//Spawns type of enemy at specific positions and stores in vector
-	for (float i = 1.0; i < 8; i++)
-	{
-		allEnemies.push_back(new Enemy(octagonEnemy, widthSpace * i,
-			heightSpace));
-		
-		allEnemies.push_back(new Enemy(hexagonEnemy, widthSpace * i,
-			heightSpace * 2.0));
-
-		allEnemies.push_back(new Enemy(squareEnemy, widthSpace * i,
-			heightSpace * 3.0));		
-	}
-	
-	totalEnemies = allEnemies.size();
-	maxEnemyBullets = 3;
-	currentEnemyBullets = 0;
-}
-
 
 const bool Game::isRunning() const
 {
 	return window->isOpen();
 }
 
+
+//Update Functions
+void Game::update()
+{
+	pollEvents();
+	updateMousePosition();
+
+	if (startGame)
+	{
+		this->updateEnemy();
+
+		if (!gameOver)
+		{
+			this->updatePlayer();
+			this->updateGUI();
+		}
+	}
+}
 void Game::pollEvents()
 {
 	while (window->pollEvent(event))
 	{
-		
+
 		switch (event.type)
 		{
 		case sf::Event::Closed:
@@ -107,20 +88,110 @@ void Game::pollEvents()
 		}
 	}
 }
+void Game::updateMousePosition()
+{
+	mousePosWindow = sf::Mouse::getPosition(*window);
+	mousePosView = window->mapPixelToCoords(mousePosWindow);
+	
+	if (!startGame)
+	{
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			if (userInterface->easyButton.getGlobalBounds().contains(mousePosView))
+			{
+				startGame = true;
+				spawnPlayer();
+				spawnEnemy();
+			}
+			if (userInterface->normalButton.getGlobalBounds().contains(mousePosView))
+			{
+				startGame = true;
+				difficultyLevel = 1;
+				maxEnemyBullets = 2;
+				spawnPlayer();
+				spawnEnemy();
+			}
+			if (userInterface->hardButton.getGlobalBounds().contains(mousePosView))
+			{
+				startGame = true;
+				difficultyLevel = 2;
+				maxEnemyBullets = 3;
+				spawnPlayer();
+				spawnEnemy();
+			}
+			
 
+		}
+	}
 
+	if (gameOver || winGame)
+	{
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			if (userInterface->tryAgainButton.getGlobalBounds().contains(mousePosView))
+			{
+				startGame = false;
+				gameOver = false;
+				winGame = false;
+				allEnemies.clear();
+				allEnemyBullets.clear();
+				playerPoints = 0;
+				player->playerHP = 3;
+				difficultyLevel = 0;
+			}
+		}
 
-//Update Functions
+	}
+
+}
+void Game::spawnPlayer()
+{
+	player = nullptr;
+	player = new Player(static_cast<float>(videoMode.width),
+		static_cast<float>(videoMode.height));
+	playerPoints = 0;
+}
+void Game::spawnEnemy()
+{
+	//Sets the positions of enemies relative to resolution size
+	float widthSpace = static_cast<float>(videoMode.width / 8.0);
+	float heightSpace = static_cast<float>(videoMode.height / 9.0);
+
+	//Spawns type of enemy at specific positions and stores in vector
+	//Based on difficulty
+	for (float i = 1.0; i < 8; i++)
+	{
+		if (difficultyLevel >= 2)
+		{
+			allEnemies.push_back(new Enemy(octagonEnemy, widthSpace * i,
+				heightSpace));
+		}
+		if (difficultyLevel >= 1)
+		{
+			allEnemies.push_back(new Enemy(hexagonEnemy, widthSpace * i,
+				heightSpace * 2.0));
+		}
+		if (difficultyLevel >= 0)
+		{
+			allEnemies.push_back(new Enemy(squareEnemy, widthSpace * i,
+				heightSpace * 3.0));
+		}
+	}
+	totalEnemies = allEnemies.size();
+	currentEnemyBullets = 0;
+}
 void Game::updatePlayer()
 {
 	updatePlayerBulletCollision();
-	if (player->playerHP == 0)
+	updatePlayerEnemyEarthCollision();
+	if (player->playerHP <= 0)
 	{
 		gameOver = true;
 	}
 	
 	//Utilize player's own update
 	player->update(*window);
+	
 }
 
 void Game::updatePlayerBulletCollision()
@@ -140,30 +211,41 @@ void Game::updatePlayerBulletCollision()
 		}
 		enemyBulletCounter++;
 	}
+}
 
-
-
+void Game::updatePlayerEnemyEarthCollision()
+{
+	int enemyCounter = 0;
+	for (Enemy* enemyPtr : allEnemies)
+	{
+		if (enemyPtr->earthCollision)
+		{
+			player->playerHP -= 1;
+			allEnemies.erase(allEnemies.begin() + enemyCounter);
+			enemyCounter--;
+		}
+		enemyCounter++;
+	}
 
 }
 
 void Game::updateEnemy()
 {
-	updateEnemyMovement();
 	updateEnemySpeed();
+	updateEnemyMovement();
 	updateEnemyBulletCollision();
 	updateEnemyBullets();
 	updateEnemyBulletBoundary();
-
 	
 
 	//Run each enemy's own update method
 	for (Enemy* ptr : allEnemies)
 	{
-		ptr->updateEnemySpeed(currentEnemyPercentage);
 		ptr->update(*window);
 	}
-}
 
+	
+}
 void Game::updateEnemySpeed()
 {
 	if (allEnemies.size() > 0)
@@ -171,9 +253,11 @@ void Game::updateEnemySpeed()
 		currentEnemyPercentage =
 			totalEnemies / static_cast<int>(allEnemies.size());
 	}
+	for (Enemy* ptr : allEnemies)
+	{
+		ptr->updateEnemySpeed(currentEnemyPercentage);
+	}
 }
-
-
 void Game::updateEnemyMovement()
 {
 	//For all enemies, check if touching right/left border
@@ -202,9 +286,7 @@ void Game::updateEnemyMovement()
 			ptr->leftBorder = false;
 		}
 	}
-
 }
-
 void Game::updateEnemyBulletCollision()
 {
 	int enemyCounter = 0;
@@ -212,18 +294,17 @@ void Game::updateEnemyBulletCollision()
 	for (Enemy* enemyPtr : allEnemies)
 	{
 		int bulletCounter = 0;
-		for (PlayerBullet* bulletPtr : player->allPlayerBullets)
+		for (PlayerBullet* playerBulletPtr : player->allPlayerBullets)
 		{
-			enemyPtr->checkBulletCollision(bulletPtr);
+			enemyPtr->checkBulletCollision(playerBulletPtr);
 			if (enemyPtr->bulletCollision)
 			{
-				bulletPtr->oppositionCollision();
+				playerBulletPtr->enemyCollision();
 				playerPoints++;
 			}
-			
-			//if this bullet has been collided with, 
+			//if this Player Bullet has been collided with Enemy
 			//remove the bullet
-			if (bulletPtr->collidedEnemy)
+			if (playerBulletPtr->collidedEnemy)
 			{
 				player->allPlayerBullets.erase(
 					player->allPlayerBullets.begin() + bulletCounter);
@@ -232,7 +313,6 @@ void Game::updateEnemyBulletCollision()
 			}
 			bulletCounter++;
 		}
-
 		//if enemy HAS COLLIDED, delete the enemy 
 		if (enemyPtr->bulletCollision)
 		{
@@ -240,11 +320,13 @@ void Game::updateEnemyBulletCollision()
 			enemyCounter--;
 		}
 		enemyCounter++;
-
 	}
-
+	//Check amount of all enemies
+	if (allEnemies.size() == 0)
+	{
+		winGame = true;
+	}
 }
-
 void Game::updateEnemyBullets()
 {
 	//Shoot bullets
@@ -261,14 +343,12 @@ void Game::updateEnemyBullets()
 			currentEnemyBullets++;
 		}
 	}	
-
 	//Move bullets
 	for (EnemyBullet* i : allEnemyBullets)
 	{
 		i->update(*window);
 	}
 }
-
 void Game::updateEnemyBulletBoundary()
 {
 	int bulletCounter = 0;
@@ -290,33 +370,29 @@ void Game::updateEnemyBulletBoundary()
 
 void Game::updateGUI()
 {
-	std::stringstream stringstream;
-	stringstream << "POINTS: " << playerPoints
-		<< "           "
-		<< "HEALTH: " << player->playerHP;
-	inGameText.setString(stringstream.str());
-
-
-
+	userInterface->updateGUI(winGame, gameOver, playerPoints, player->playerHP);
 }
-
-
-void Game::update()
-{
-	pollEvents();
-
-	this->updateEnemy();
-
-	if (!gameOver)
-	{
-		updatePlayer();
-		updateGUI();
-	}
-		
-}
-
 
 //Render Functions
+void Game::render()
+{
+	window->clear();
+
+	renderBackground();
+	if (startGame)
+	{
+		this->renderPlayer();
+
+		if (!winGame)
+		{
+			this->renderEnemies();
+			renderEnemyBullets(*window);
+		}
+	}
+	this->renderGUI();
+
+	window->display();
+}
 void Game::renderEnemies()
 {
 	if (allEnemies.size() > 0)
@@ -338,31 +414,23 @@ void Game::renderEnemyBullets(sf::RenderTarget& target)
 	}
 
 }
-void Game::renderGUI()
+void Game::renderPlayer()
 {
-	window->draw(inGameText);
-	if (gameOver)
-	{
-		window->draw(endGameText);
-	}
-}
-void Game::render()
-{
-	window->clear();
-
-	
 	if (player->playerHP > 0)
 	{
 		player->render(*window);
 	}
-	this->renderEnemies();
-	renderEnemyBullets(*window);
-	renderGUI();
-	
-	
 
-	window->display();
 }
+void Game::renderGUI()
+{
+	userInterface->renderGUI(startGame, gameOver, winGame, *window);
+}
+void Game::renderBackground()
+{
+	window->draw(space);
+}
+
 
 
 Game::~Game()
@@ -372,7 +440,7 @@ Game::~Game()
 
 	delete window;
 	window = nullptr;
-	
+
 	for (Enemy* ptr : allEnemies)
 	{
 		delete ptr;
@@ -386,6 +454,8 @@ Game::~Game()
 		ptr = nullptr;
 	}
 	allEnemyBullets.clear();
-	
+
+	delete userInterface;
+	userInterface = nullptr;
 }
 
