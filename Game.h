@@ -1,4 +1,6 @@
 #pragma once
+
+
 #include <iostream>
 #include <ctime>
 #include <vector>
@@ -26,6 +28,19 @@ private:
 	sf::Texture background;
 	sf::Sprite space;
 	sf::Vector2u backgroundSize;
+
+	//Sound
+	sf::SoundBuffer enemyHitBuffer;
+	sf::Sound enemyHitSound;
+	sf::SoundBuffer enemyShootBuffer;
+	sf::Sound enemyShootSound;
+	sf::SoundBuffer playerHitBuffer;
+	sf::Sound playerHitSound;
+	sf::SoundBuffer finalEnemyBuffer;
+	sf::Sound finalEnemySound;
+	sf::SoundBuffer playerNoLivesBuffer;
+	sf::Sound playerNoLivesSound;
+
 
 	//UI
 	UserInterface* userInterface;
@@ -59,6 +74,7 @@ private:
 	void initWindow();
 	void initBackground();
 	void initGUI();
+	void initSound();
 
 	void spawnPlayer();
 	void spawnEnemy();

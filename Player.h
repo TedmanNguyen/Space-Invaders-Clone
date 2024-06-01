@@ -6,6 +6,7 @@
 
 #include "PlayerBullet.h"
 #include "EnemyBullet.h"
+#include <iostream>
 
 
 class Player
@@ -18,13 +19,20 @@ private:
 	float spawnPositionX;
 	float spawnPositionY;
 	float resolutionHeight;
-	
+
+	//Sound
+	sf::SoundBuffer laserBuffer;
+	sf::Sound laserSound;
+
+
+
 //Functions
 //Initialization
 	sf::Vector2f getPlayerPosition();
 	void initVariables(float resolutionHeight);
 	void initShape(float resolutionWidth,
 		float resolutionHeight);
+	void initSound();
 //Update
 	void updateWindowBounds(const sf::RenderTarget& target);
 	void movePlayer();

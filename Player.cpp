@@ -3,7 +3,8 @@
 Player::Player(float resolutionWidth, float resolutionHeight)
 {
 	initVariables(resolutionHeight);
-	initShape(resolutionWidth, resolutionHeight);		
+	initShape(resolutionWidth, resolutionHeight);	
+	initSound();
 }
 void Player::initShape(float resolutionWidth, float resolutionHeight)
 {
@@ -11,11 +12,13 @@ void Player::initShape(float resolutionWidth, float resolutionHeight)
 	spawnPositionY = resolutionHeight / 1.1;
 	
 	//triangle = new sf::CircleShape(20, 3);
-	triangle.setRadius(20);
+	triangle.setRadius(30);
 	triangle.setPointCount(3);
 	triangle.setFillColor(sf::Color::Yellow);
 	triangle.setOrigin(triangle.getRadius(),0);
 	triangle.setPosition(spawnPositionX, spawnPositionY);
+
+
 }
 
 
@@ -31,6 +34,17 @@ void Player::initVariables(float resolutionHeight)
 	playerHP = 3;
 	collidedWithEnemyBullet = false;
 
+}
+
+void Player::initSound()
+{
+	
+	if (!laserBuffer.loadFromFile("Sound/laserShoot.wav"))
+	{
+		std::cerr << "ERROR::GAME::INITSOUND COULD NOT PLAY";
+	}
+	laserSound.setBuffer(laserBuffer);
+	
 }
 
 void Player::movePlayer()
@@ -57,6 +71,8 @@ void Player::shootBullets(const sf::RenderTarget& target)
 			allPlayerBullets.push_back(new PlayerBullet(resolutionHeight, 
 				triangle.getPosition()));
 			currentBullets++;
+			laserSound.play();
+
 		}
 	}
 	

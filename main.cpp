@@ -1,4 +1,3 @@
-
 #include "Game.h"
 
 
@@ -8,8 +7,6 @@ int main()
 
     //Create main window
     Game game;
-
-
 
     // Start the game loop
     while (game.isRunning())

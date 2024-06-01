@@ -7,6 +7,7 @@ Game::Game()
 	initWindow();
 	initBackground();
 	initGUI();
+	initSound();
 }
 //Intialization Functions
 void Game::initVariables()
@@ -44,11 +45,47 @@ void Game::initBackground()
 	backgroundSize = background.getSize();
 	space.setTexture(background);
 	space.setPosition(sf::Vector2f(0, -150));
+	
 }
+
 void Game::initGUI()
 {
 	userInterface = new UserInterface(static_cast<float>(videoMode.width), 
 		static_cast<float>(videoMode.height));
+}
+
+void Game::initSound()
+{
+
+	if (!enemyHitBuffer.loadFromFile("Sound/enemyHit.wav"))
+	{
+		std::cerr << "ERROR::GAME::INITSOUND enemysound COULD NOT PLAY";
+	}
+	enemyHitSound.setBuffer(enemyHitBuffer);
+
+	if (!playerHitBuffer.loadFromFile("Sound/playerHit.wav"))
+	{
+		std::cerr << "ERROR::GAME::INITSOUND playerHit COULD NOT PLAY";
+	}
+	playerHitSound.setBuffer(playerHitBuffer);
+
+	if (!finalEnemyBuffer.loadFromFile("Sound/lastEnemy2.wav"))
+	{
+		std::cerr << "ERROR::GAME::INITSOUND final enemy sound COULD NOT PLAY";
+	}
+	finalEnemySound.setBuffer(finalEnemyBuffer);
+
+	if (!playerNoLivesBuffer.loadFromFile("Sound/playerNoLives.wav"))
+	{
+		std::cerr << "ERROR::GAME::INITSOUND final enemy sound COULD NOT PLAY";
+	}
+	playerNoLivesSound.setBuffer(playerNoLivesBuffer);
+
+	if (!enemyShootBuffer.loadFromFile("Sound/enemyShoot.wav"))
+	{
+		std::cerr << "ERROR::GAME::INITSOUND final enemy shoot COULD NOT PLAY";
+	}
+	enemyShootSound.setBuffer(enemyShootBuffer);
 }
 
 const bool Game::isRunning() const
@@ -62,6 +99,7 @@ void Game::update()
 {
 	pollEvents();
 	updateMousePosition();
+	//laserSound.play();
 
 	if (startGame)
 	{
@@ -151,7 +189,7 @@ void Game::spawnPlayer()
 		static_cast<float>(videoMode.height));
 	playerPoints = 0;
 }
-void Game::spawnEnemy()
+void Game::spawnEnemy() 
 {
 	//Sets the positions of enemies relative to resolution size
 	float widthSpace = static_cast<float>(videoMode.width / 8.0);
@@ -187,6 +225,7 @@ void Game::updatePlayer()
 	if (player->playerHP <= 0)
 	{
 		gameOver = true;
+		playerNoLivesSound.play();
 	}
 	
 	//Utilize player's own update
@@ -208,6 +247,7 @@ void Game::updatePlayerBulletCollision()
 				allEnemyBullets.begin() + enemyBulletCounter);
 			enemyBulletCounter--;
 			currentEnemyBullets--;
+			playerHitSound.play();
 		}
 		enemyBulletCounter++;
 	}
@@ -301,6 +341,17 @@ void Game::updateEnemyBulletCollision()
 			{
 				playerBulletPtr->enemyCollision();
 				playerPoints++;
+				if (allEnemies.size() > 1)
+				{
+					enemyHitSound.play();
+				}
+				else
+				{
+					finalEnemySound.play();
+				}
+				
+				
+
 			}
 			//if this Player Bullet has been collided with Enemy
 			//remove the bullet
@@ -341,6 +392,7 @@ void Game::updateEnemyBullets()
 			(*randomEnemy)->shootBullets(videoMode.height,
 				allEnemyBullets);
 			currentEnemyBullets++;
+			enemyShootSound.play();
 		}
 	}	
 	//Move bullets
