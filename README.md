@@ -1,6 +1,6 @@
 # Shape Invaders 
 My take of the 1978 classic Space Invaders.  
-👽 Fire lasers and take down Aliens, erm shapes, to protect earth. 
+👽 Fire lasers and take down Aliens, erm shapes, to protect earth.  
 ⚠️ Fight through 3 difficulties, take down more and more aliens!  
 
 Programming stats:
