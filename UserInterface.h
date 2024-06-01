@@ -37,11 +37,14 @@ public:
 
 	float resolutionWidth;
 
+
+
 	void initFont();
 	void initText(float resolutionWidth, float resolutionHeight);
 	void initButtons(float resolutionWidth, float resolutionHeight);
 
 	void updateGUI(bool winGame, bool gameOver, int playerPoints, int playerHP);
+	
 	void renderGUI(const bool& startGame, const bool& gameOver,
 		const bool& winGame, sf::RenderTarget& target);
 

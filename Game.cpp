@@ -17,7 +17,7 @@ void Game::initVariables()
 	videoMode.width = 500;
 	
 	//Game states
-	gameOver = false;
+	loseGame = false;
 	startGame = false;
 	winGame = false;
 	difficultyLevel = 0;
@@ -34,7 +34,6 @@ void Game::initWindow()
 	window = new sf::RenderWindow(videoMode, "Shape Invaders",
 		sf::Style::Default);
 	window->setFramerateLimit(60);
-
 }
 void Game::initBackground()
 {
@@ -45,7 +44,6 @@ void Game::initBackground()
 	backgroundSize = background.getSize();
 	space.setTexture(background);
 	space.setPosition(sf::Vector2f(0, -150));
-	
 }
 
 void Game::initGUI()
@@ -56,36 +54,7 @@ void Game::initGUI()
 
 void Game::initSound()
 {
-
-	if (!enemyHitBuffer.loadFromFile("Sound/enemyHit.wav"))
-	{
-		std::cerr << "ERROR::GAME::INITSOUND enemysound COULD NOT PLAY";
-	}
-	enemyHitSound.setBuffer(enemyHitBuffer);
-
-	if (!playerHitBuffer.loadFromFile("Sound/playerHit.wav"))
-	{
-		std::cerr << "ERROR::GAME::INITSOUND playerHit COULD NOT PLAY";
-	}
-	playerHitSound.setBuffer(playerHitBuffer);
-
-	if (!finalEnemyBuffer.loadFromFile("Sound/lastEnemy2.wav"))
-	{
-		std::cerr << "ERROR::GAME::INITSOUND final enemy sound COULD NOT PLAY";
-	}
-	finalEnemySound.setBuffer(finalEnemyBuffer);
-
-	if (!playerNoLivesBuffer.loadFromFile("Sound/playerNoLives.wav"))
-	{
-		std::cerr << "ERROR::GAME::INITSOUND final enemy sound COULD NOT PLAY";
-	}
-	playerNoLivesSound.setBuffer(playerNoLivesBuffer);
-
-	if (!enemyShootBuffer.loadFromFile("Sound/enemyShoot.wav"))
-	{
-		std::cerr << "ERROR::GAME::INITSOUND final enemy shoot COULD NOT PLAY";
-	}
-	enemyShootSound.setBuffer(enemyShootBuffer);
+	gameSound = new SoundFX();
 }
 
 const bool Game::isRunning() const
@@ -93,19 +62,17 @@ const bool Game::isRunning() const
 	return window->isOpen();
 }
 
-
 //Update Functions
 void Game::update()
 {
 	pollEvents();
 	updateMousePosition();
-	//laserSound.play();
 
 	if (startGame)
 	{
 		this->updateEnemy();
 
-		if (!gameOver)
+		if (!loseGame)
 		{
 			this->updatePlayer();
 			this->updateGUI();
@@ -116,13 +83,11 @@ void Game::pollEvents()
 {
 	while (window->pollEvent(event))
 	{
-
 		switch (event.type)
 		{
 		case sf::Event::Closed:
 			window->close();
 			break;
-
 		}
 	}
 }
@@ -133,43 +98,90 @@ void Game::updateMousePosition()
 	
 	if (!startGame)
 	{
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		//Increase text size on mouseover
+		if (userInterface->easyButton.getGlobalBounds().contains(mousePosView))
 		{
-			if (userInterface->easyButton.getGlobalBounds().contains(mousePosView))
+			userInterface->easyModeText.setCharacterSize(60);
+			userInterface->easyModeText.setPosition(
+				sf::Vector2f(videoMode.width / 2.1, 615));
+			
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
+				gameSound->buttonSound.play();
 				startGame = true;
 				spawnPlayer();
 				spawnEnemy();
 			}
-			if (userInterface->normalButton.getGlobalBounds().contains(mousePosView))
+		}
+		else
+		{
+			userInterface->easyModeText.setCharacterSize(50);
+			userInterface->easyModeText.setPosition(
+				sf::Vector2f(videoMode.width / 2, 620));
+		}
+		if (userInterface->normalButton.getGlobalBounds().contains(mousePosView))
+		{
+			userInterface->normalModeText.setCharacterSize(60);
+			userInterface->normalModeText.setPosition(
+				sf::Vector2f(videoMode.width / 2.5, 715));
+			
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
+				gameSound->buttonSound.play();
 				startGame = true;
 				difficultyLevel = 1;
 				maxEnemyBullets = 2;
 				spawnPlayer();
 				spawnEnemy();
 			}
-			if (userInterface->hardButton.getGlobalBounds().contains(mousePosView))
+		}
+		else
+		{
+			userInterface->normalModeText.setCharacterSize(50);
+			userInterface->normalModeText.setPosition(
+				sf::Vector2f(videoMode.width / 2.3, 720));
+
+		}
+		
+		if (userInterface->hardButton.getGlobalBounds().contains(mousePosView))
+		{
+			userInterface->hardModeText.setCharacterSize(60);
+			userInterface->hardModeText.setPosition(
+				sf::Vector2f(videoMode.width / 2.1, 815));
+			
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
+				gameSound->buttonSound.play();
 				startGame = true;
 				difficultyLevel = 2;
 				maxEnemyBullets = 3;
 				spawnPlayer();
 				spawnEnemy();
 			}
-			
-
+		}
+		else
+		{
+			userInterface->hardModeText.setCharacterSize(50);
+			userInterface->hardModeText.setPosition(
+				sf::Vector2f(videoMode.width / 2, 820));
 		}
 	}
 
-	if (gameOver || winGame)
+
+	//If Play Again is pressed 
+	if (loseGame || winGame)
 	{
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (userInterface->tryAgainButton.getGlobalBounds().contains(mousePosView))
 		{
-			if (userInterface->tryAgainButton.getGlobalBounds().contains(mousePosView))
+			userInterface->tryAgainText.setCharacterSize(65);
+			userInterface->tryAgainText.setPosition(
+				sf::Vector2f(135, 515));
+
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
+				gameSound->buttonSound.play();
 				startGame = false;
-				gameOver = false;
+				loseGame = false;
 				winGame = false;
 				allEnemies.clear();
 				allEnemyBullets.clear();
@@ -178,7 +190,12 @@ void Game::updateMousePosition()
 				difficultyLevel = 0;
 			}
 		}
-
+		else
+		{
+			userInterface->tryAgainText.setCharacterSize(60);
+			userInterface->tryAgainText.setPosition(
+				sf::Vector2f(140, 520));
+		}
 	}
 
 }
@@ -224,8 +241,8 @@ void Game::updatePlayer()
 	updatePlayerEnemyEarthCollision();
 	if (player->playerHP <= 0)
 	{
-		gameOver = true;
-		playerNoLivesSound.play();
+		loseGame = true;
+		gameSound->playerNoLivesSound.play();
 	}
 	
 	//Utilize player's own update
@@ -247,7 +264,7 @@ void Game::updatePlayerBulletCollision()
 				allEnemyBullets.begin() + enemyBulletCounter);
 			enemyBulletCounter--;
 			currentEnemyBullets--;
-			playerHitSound.play();
+			gameSound->playerHitSound.play();
 		}
 		enemyBulletCounter++;
 	}
@@ -262,6 +279,7 @@ void Game::updatePlayerEnemyEarthCollision()
 		{
 			player->playerHP -= 1;
 			allEnemies.erase(allEnemies.begin() + enemyCounter);
+			gameSound->playerHitSound.play();
 			enemyCounter--;
 		}
 		enemyCounter++;
@@ -279,9 +297,19 @@ void Game::updateEnemy()
 	
 
 	//Run each enemy's own update method
+	int enemyCounter = 0;
 	for (Enemy* ptr : allEnemies)
 	{
 		ptr->update(*window);
+		if (loseGame)
+		{
+			if (ptr->earthCollision)
+			{
+				allEnemies.erase(allEnemies.begin() + enemyCounter);
+				enemyCounter--;
+			}
+		}
+		enemyCounter++;
 	}
 
 	
@@ -341,13 +369,17 @@ void Game::updateEnemyBulletCollision()
 			{
 				playerBulletPtr->enemyCollision();
 				playerPoints++;
+				gameSound->enemyHitSound.play();
 				if (allEnemies.size() > 1)
 				{
-					enemyHitSound.play();
+					gameSound->enemyHitSound.play();
 				}
 				else
 				{
-					finalEnemySound.play();
+					gameSound->enemyHitSound.play();
+
+					//Game win sound
+					gameSound->finalEnemySound.play();
 				}
 				
 				
@@ -373,7 +405,7 @@ void Game::updateEnemyBulletCollision()
 		enemyCounter++;
 	}
 	//Check amount of all enemies
-	if (allEnemies.size() == 0)
+	if (allEnemies.size() == 0 && !loseGame)
 	{
 		winGame = true;
 	}
@@ -392,7 +424,7 @@ void Game::updateEnemyBullets()
 			(*randomEnemy)->shootBullets(videoMode.height,
 				allEnemyBullets);
 			currentEnemyBullets++;
-			enemyShootSound.play();
+			gameSound->enemyShootSound.play();
 		}
 	}	
 	//Move bullets
@@ -422,7 +454,7 @@ void Game::updateEnemyBulletBoundary()
 
 void Game::updateGUI()
 {
-	userInterface->updateGUI(winGame, gameOver, playerPoints, player->playerHP);
+	userInterface->updateGUI(winGame, loseGame, playerPoints, player->playerHP);
 }
 
 //Render Functions
@@ -476,7 +508,7 @@ void Game::renderPlayer()
 }
 void Game::renderGUI()
 {
-	userInterface->renderGUI(startGame, gameOver, winGame, *window);
+	userInterface->renderGUI(startGame, loseGame, winGame, *window);
 }
 void Game::renderBackground()
 {
@@ -492,6 +524,9 @@ Game::~Game()
 
 	delete window;
 	window = nullptr;
+
+	delete gameSound;
+	gameSound = nullptr;
 
 	for (Enemy* ptr : allEnemies)
 	{

@@ -1,7 +1,8 @@
 #include "UserInterface.h"
 
-UserInterface::UserInterface()
+UserInterface::UserInterface() 
 {
+	resolutionWidth = 0;
 }
 
 UserInterface::UserInterface(float resolutionWidth, float resolutionHeight)
@@ -10,6 +11,7 @@ UserInterface::UserInterface(float resolutionWidth, float resolutionHeight)
 	initFont();
 	initText(resolutionWidth, resolutionHeight);
 	initButtons(resolutionWidth, resolutionHeight);
+
 
 }
 
@@ -114,7 +116,7 @@ void UserInterface::initButtons(float resolutionWidth, float resolutionHeight)
 	hardButton.setOutlineThickness(5.f);
 }
 
-void UserInterface::updateGUI(bool winGame, bool gameOver, int playerPoints, int playerHP)
+void UserInterface::updateGUI(bool winGame, bool loseGame, int playerPoints, int playerHP)
 {
 	std::stringstream stringstream;
 	stringstream << "POINTS: " << playerPoints
@@ -122,7 +124,7 @@ void UserInterface::updateGUI(bool winGame, bool gameOver, int playerPoints, int
 		<< "HEALTH: " << playerHP;
 	inGameText.setString(stringstream.str());
 
-	if (winGame || gameOver)
+	if (winGame || loseGame)
 	{
 		sf::Vector2f tryAgainButtonSize(300.f, 100.f);
 		tryAgainButton.setSize(tryAgainButtonSize);
@@ -136,14 +138,14 @@ void UserInterface::updateGUI(bool winGame, bool gameOver, int playerPoints, int
 
 }
 
-void UserInterface::renderGUI(const bool& startGame, const bool& gameOver, 
+void UserInterface::renderGUI(const bool& startGame, const bool& loseGame, 
 	const bool& winGame, sf::RenderTarget& target)
 {
 	if (startGame)
 	{
 		target.draw(inGameText);
 
-		if (gameOver && !winGame)
+		if (loseGame && !winGame)
 		{
 			target.draw(endGameText);
 			target.draw(tryAgainButton);

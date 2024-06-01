@@ -4,7 +4,7 @@ Player::Player(float resolutionWidth, float resolutionHeight)
 {
 	initVariables(resolutionHeight);
 	initShape(resolutionWidth, resolutionHeight);	
-	initSound();
+
 }
 void Player::initShape(float resolutionWidth, float resolutionHeight)
 {
@@ -36,17 +36,6 @@ void Player::initVariables(float resolutionHeight)
 
 }
 
-void Player::initSound()
-{
-	
-	if (!laserBuffer.loadFromFile("Sound/laserShoot.wav"))
-	{
-		std::cerr << "ERROR::GAME::INITSOUND COULD NOT PLAY";
-	}
-	laserSound.setBuffer(laserBuffer);
-	
-}
-
 void Player::movePlayer()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -71,7 +60,7 @@ void Player::shootBullets(const sf::RenderTarget& target)
 			allPlayerBullets.push_back(new PlayerBullet(resolutionHeight, 
 				triangle.getPosition()));
 			currentBullets++;
-			laserSound.play();
+			playerSound.laserSound.play();
 
 		}
 	}

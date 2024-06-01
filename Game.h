@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "UserInterface.h"
+#include "SoundFX.h"
 
 
 class Game
@@ -19,7 +20,7 @@ private:
 	sf::Event event;
 
 	//Game States
-	bool gameOver;
+	bool loseGame;
 	bool startGame;
 	bool winGame;
 	int difficultyLevel;
@@ -30,17 +31,7 @@ private:
 	sf::Vector2u backgroundSize;
 
 	//Sound
-	sf::SoundBuffer enemyHitBuffer;
-	sf::Sound enemyHitSound;
-	sf::SoundBuffer enemyShootBuffer;
-	sf::Sound enemyShootSound;
-	sf::SoundBuffer playerHitBuffer;
-	sf::Sound playerHitSound;
-	sf::SoundBuffer finalEnemyBuffer;
-	sf::Sound finalEnemySound;
-	sf::SoundBuffer playerNoLivesBuffer;
-	sf::Sound playerNoLivesSound;
-
+	SoundFX* gameSound;
 
 	//UI
 	UserInterface* userInterface;
