@@ -3,7 +3,7 @@ My take of the 1978 classic Space Invaders.
 👽 Fire lasers and take down Aliens, erm shapes, to protect earth.  
 ⚠️ Fight through 3 difficulties, take down more and more aliens!  
 
-Programming stats:
+Programming stats:  
 🕕 Programmed in 3 weeks  
 📔 Created Custom Title Screen and Menu buttons  
 🎧 Included to 8bit sounds for immersive gameplay  
