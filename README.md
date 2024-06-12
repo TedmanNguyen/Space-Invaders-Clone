@@ -12,7 +12,7 @@ Programming stats:
 💪 Focused on Object Oriented Principles, with 6 different classes and 2 derived classes  
 
 # Latest Build
-![](https://github.com/TedmanNguyen/Space-Invaders-Clone/blob/main/hard%20mode%20update.gif))
+![](https://github.com/TedmanNguyen/Space-Invaders-Clone/blob/main/hard%20mode%20update%20rescale.gif)
 
 # First Commit 
 ![](https://github.com/TedmanNguyen/Space-Invaders-Clone/blob/main/moving%20player.gif)
