@@ -8,7 +8,7 @@ Enemy::Enemy(int type, float spawnPositionX, float spawnPositionY)
 void Enemy::initVariables()
 {
 	enemySpeed = 1.f;
-	enemyVerticalSpeed = 2.5f;
+	enemyVerticalSpeed = 6.5f;
 	enemyRadius = 20.f;
 	
 	//Directional Booleans
@@ -20,6 +20,7 @@ void Enemy::initVariables()
 	//bullet collisions
 	bulletCollision = false;
 	earthCollision = false;
+	playerCollision = false;
 	 
 }
 void Enemy::initShape(int type, 
@@ -65,11 +66,12 @@ void Enemy::initOctagon(float spawnPositionX, float spawnPositionY)
 	shape.setPosition(spawnPositionX, spawnPositionY);
 }
 
-void Enemy::update(sf::RenderTarget& target)
+void Enemy::update(sf::RenderTarget& target, Player& player)
 {
 	checkBorder(target);
 	moveEnemyLeftRight();
 	checkEarthCollision(target.getSize().y);
+	checkPlayerCollision(player);
 }
 //Movement functions
 void Enemy::checkBorder(sf::RenderTarget& target)
@@ -102,10 +104,7 @@ void Enemy::updateEnemySpeed(float num)
 	//Enemy speed increases, multiplied by 
 	// inverse porportion of current enemies
 	enemySpeed = .8f * num;
-	if (enemyVerticalSpeed <= 4.8f)
-	{
-		enemyVerticalSpeed = enemyVerticalSpeed * num;
-	}
+	
 }
 void Enemy::repositionDown()
 {
@@ -137,6 +136,14 @@ void Enemy::checkEarthCollision(float resolutionHeight)
 		earthCollision = true;
 	}
 
+}
+
+void Enemy::checkPlayerCollision(Player& player)
+{
+	if (shape.getGlobalBounds().intersects(player.triangle.getGlobalBounds()))
+	{
+		playerCollision = true;
+	}
 }
 
 void Enemy::render(sf::RenderTarget& target)

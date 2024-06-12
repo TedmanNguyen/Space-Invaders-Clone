@@ -17,7 +17,6 @@ class Player
 {
 private:
 //Variables
-	sf::CircleShape triangle;
 	float playerMovementSpeed; 
 	int maxBullets = 1;
 	float spawnPositionX;
@@ -45,6 +44,7 @@ public:
 	~Player();
 
 //Variables
+	sf::CircleShape triangle;
 	int playerHP; 
 	int currentBullets = 0;
 	bool collidedWithEnemyBullet;

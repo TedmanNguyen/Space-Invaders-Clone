@@ -39,30 +39,35 @@ void UserInterface::initText(float resolutionWidth, float resolutionHeight)
 
 	titleText.setFont(fonts);
 	titleText.setFillColor(sf::Color::White);
-	titleText.setCharacterSize(70);
-	titleText.setPosition(sf::Vector2f(50, 300));
 	titleText.setString(titleStream.str());
+	titleText.setCharacterSize(120);
+	titleText.setOrigin(titleText.getGlobalBounds().width / 2, 0.f);
+	titleText.setPosition(sf::Vector2f(resolutionWidth / 2, resolutionHeight / 5));
+	
 
 	easyModeText.setFont(fonts);
-	easyModeText.setOrigin(70.f, 0.f);
+	easyModeText.setString("EASY");
 	easyModeText.setFillColor(sf::Color::White);
 	easyModeText.setCharacterSize(50);
+	easyModeText.setOrigin(easyModeText.getGlobalBounds().width / 2, 0.f);
 	easyModeText.setPosition(sf::Vector2f(resolutionWidth / 2, 620));
-	easyModeText.setString("EASY");
+	
 
 	normalModeText.setFont(fonts);
-	normalModeText.setOrigin(70.f, 0.f);
 	normalModeText.setFillColor(sf::Color::White);
-	normalModeText.setCharacterSize(50);
-	normalModeText.setPosition(sf::Vector2f(resolutionWidth / 2.3, 720));
 	normalModeText.setString("NORMAL");
+	normalModeText.setCharacterSize(50);
+	normalModeText.setOrigin(normalModeText.getGlobalBounds().width / 2, 0.f);
+	normalModeText.setPosition(sf::Vector2f(resolutionWidth / 2, 720));
+	
 
 	hardModeText.setFont(fonts);
-	hardModeText.setOrigin(70.f, 0.f);
+	hardModeText.setString("HARD");
 	hardModeText.setFillColor(sf::Color::White);
 	hardModeText.setCharacterSize(50);
+	hardModeText.setOrigin(hardModeText.getGlobalBounds().width / 2, 0.f);
 	hardModeText.setPosition(sf::Vector2f(resolutionWidth / 2, 820));
-	hardModeText.setString("HARD");
+	
 
 	inGameText.setFont(fonts);
 	inGameText.setFillColor(sf::Color::White);
@@ -70,22 +75,28 @@ void UserInterface::initText(float resolutionWidth, float resolutionHeight)
 	inGameText.setPosition(sf::Vector2f(20, 50));
 
 	endGameText.setFont(fonts);
-	endGameText.setFillColor(sf::Color::White);
-	endGameText.setCharacterSize(70);
-	endGameText.setPosition(sf::Vector2f(20, 300));
 	endGameText.setString("GAME OVER!");
+	endGameText.setFillColor(sf::Color::White);
+	endGameText.setCharacterSize(100);
+	endGameText.setOrigin(endGameText.getGlobalBounds().width / 2, 0);
+	endGameText.setPosition(sf::Vector2f(resolutionWidth / 2, 300));
+	
 
 	tryAgainText.setFont(fonts);
+	tryAgainText.setString("AGAIN!");
 	tryAgainText.setFillColor(sf::Color::White);
 	tryAgainText.setCharacterSize(60);
-	tryAgainText.setPosition(sf::Vector2f(140, 520));
+	tryAgainText.setPosition(sf::Vector2f(resolutionWidth / 2, 520));
+	tryAgainText.setOrigin(tryAgainText.getGlobalBounds().width / 2, 0.f);
 	tryAgainText.setString("AGAIN!");
 
 	winGameText.setFont(fonts);
-	winGameText.setFillColor(sf::Color::White);
-	winGameText.setCharacterSize(70);
-	winGameText.setPosition(sf::Vector2f(80, 300));
 	winGameText.setString("YOU WIN!");
+	winGameText.setFillColor(sf::Color::White);
+	winGameText.setCharacterSize(120);
+	winGameText.setOrigin(winGameText.getGlobalBounds().width / 2, 0.f);
+	winGameText.setPosition(sf::Vector2f(resolutionWidth / 2, 300));
+	
 
 }
 
@@ -120,7 +131,7 @@ void UserInterface::updateGUI(bool winGame, bool loseGame, int playerPoints, int
 {
 	std::stringstream stringstream;
 	stringstream << "POINTS: " << playerPoints
-		<< "           "
+		<< "                                                "
 		<< "HEALTH: " << playerHP;
 	inGameText.setString(stringstream.str());
 

@@ -2,13 +2,9 @@
 
 SoundFX::SoundFX()
 {
-
 	initEnemySound();
 	initPlayerSound();
 	initMenuSound();
-
-
-
 }
 
 SoundFX::~SoundFX()
@@ -45,14 +41,11 @@ void SoundFX::initMenuSound()
 		std::cerr << "ERROR::SoundFX::INITSOUND button COULD NOT PLAY";
 	}
 	buttonSound.setBuffer(buttonBuffer);
-
 }
 
 
 void SoundFX::initPlayerSound()
 {
-	
-
 	if (!playerHitBuffer.loadFromFile("Sound/playerHit.wav"))
 	{
 		std::cerr << "ERROR::SoundFX::INITSOUND playerHit COULD NOT PLAY";

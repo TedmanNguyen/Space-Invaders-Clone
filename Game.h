@@ -79,7 +79,6 @@ private:
 	//Player
 	void updatePlayer();
 	void updatePlayerBulletCollision();
-	void updatePlayerEnemyEarthCollision();
 	
 	//Enemy
 	void updateEnemy();

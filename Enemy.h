@@ -6,6 +6,7 @@
 
 #include "PlayerBullet.h"
 #include "EnemyBullet.h"
+#include "Player.h"
 
 class Enemy
 {
@@ -43,6 +44,7 @@ public:
 	bool moveLeft;
 	bool bulletCollision;
 	bool earthCollision;
+	bool playerCollision;
 
 //Functions
 	void repositionDown();
@@ -51,8 +53,9 @@ public:
 		std::vector<EnemyBullet*>& allEnemyBullets);
 	void checkBulletCollision(PlayerBullet* bullet);
 	void checkEarthCollision(float resolutionHeight);
+	void checkPlayerCollision(Player& player);
 
-	void update(sf::RenderTarget& target);
+	void update(sf::RenderTarget& target, Player& player);
 
 	void render(sf::RenderTarget& target);
 
