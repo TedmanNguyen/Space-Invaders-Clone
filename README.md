@@ -4,7 +4,7 @@ My take of the 1978 classic Space Invaders.
 ⚠️ Fight through 3 difficulties, take down more and more aliens!  
 
 Programming stats:  
-🕕 On-going
+🕕 On-going  
 📔 Created Custom Title Screen and Menu buttons  
 🎧 Included to 8bit sounds for immersive gameplay  
 ✨ Coded collisions, normally taken care of by Unity / Unreal  
