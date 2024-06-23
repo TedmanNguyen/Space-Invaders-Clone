@@ -15,6 +15,6 @@ Programming stats:
 ![](https://github.com/TedmanNguyen/Space-Invaders-Clone/blob/main/Progress%20Gifs/hard%20mode%20update%20rescale.gif)
 
 # To play:
-Download "ShapeInvaders V.1.0.0.zip" and unzip it. 
-Click on "ShapeInvaders.exe" to run
-Disclaimer: Windows will provide a publisher warning. 
+Download "ShapeInvaders V.1.0.0.zip" and unzip it.  
+Click on "ShapeInvaders.exe" to run  
+Disclaimer: Windows will provide a publisher warning.   
